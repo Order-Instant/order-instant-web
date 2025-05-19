@@ -55,15 +55,14 @@ const Contact = () => {
     <>
       {/* Hero Section */}
       <HeroSection 
-        className="py-16 bg-gray-100"
+        className="py-16 bg-gray-900 text-white"
       >
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
             Get in <span className="text-brand-orange">Touch</span>
           </h1>
           <p className="text-lg opacity-90 mb-8 animate-fade-in">
-            We're here to help with all your shipping needs. 
-            Reach out to our team for inquiries, support, or information.
+            We’re here to support you with every aspect of your shipping journey—whether you need a personalized quote, real-time tracking updates, customs clearance guidance, or answers about our logistics solutions and partnerships.
           </p>
         </div>
       </HeroSection>

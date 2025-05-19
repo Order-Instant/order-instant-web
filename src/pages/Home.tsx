@@ -119,7 +119,7 @@ const Home = () => {
       <Section>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Choose Order<span className="text-brand-orange">Instant</span>?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Choose Order <span className="text-brand-orange">Instant</span>?</h2>
             <p className="text-gray-600 mb-8">
               We've built our reputation on reliability, speed, and customer satisfaction. When you ship with us, you're choosing a partner who cares about your delivery as much as you do.
             </p>
@@ -162,7 +162,7 @@ const Home = () => {
                 <div className="bg-brand-orange/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Package className="h-8 w-8 text-brand-orange" />
                 </div>
-                <h3 className="text-3xl font-bold mb-1">10M+</h3>
+                <h3 className="text-3xl font-bold mb-1">10k+</h3>
                 <p className="text-gray-600">Packages Delivered</p>
               </div>
               <div className="bg-white p-6 rounded-lg shadow-sm text-center">
@@ -183,7 +183,7 @@ const Home = () => {
                 <div className="bg-brand-orange/10 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                   <PieChart className="h-8 w-8 text-brand-orange" />
                 </div>
-                <h3 className="text-3xl font-bold mb-1">50+</h3>
+                <h3 className="text-3xl font-bold mb-1">5+</h3>
                 <p className="text-gray-600">Countries Served</p>
               </div>
             </div>

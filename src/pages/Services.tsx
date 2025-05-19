@@ -14,7 +14,7 @@ const Services = () => {
     <>
       {/* Hero Section */}
       <HeroSection 
-        className="py-16 bg-gray-100"
+        className="py-16 bg-gray-900 text-white"
       >
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
@@ -382,7 +382,7 @@ const Services = () => {
                 </Button>
               </Link>
               <Link to="/contact">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button size="lg" className="bg-white text-brand-orange hover:bg-gray-100">
                   Contact Sales
                 </Button>
               </Link>
