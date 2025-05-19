@@ -103,11 +103,11 @@ const Footer = () => {
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-brand-orange mr-2" />
-                <a href="tel:+1-800-123-4567" className="text-gray-400 hover:text-brand-orange transition-colors duration-200">Tel. 01-4974691</a>
+                <a href="tel:01-4974691" className="text-gray-400 hover:text-brand-orange transition-colors duration-200">Tel. 01-4974691</a>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 text-brand-orange mr-2" />
-                <a href="mailto:info@orderinstant.com" className="text-gray-400 hover:text-brand-orange transition-colors duration-200">orderinstant088@gmail.com</a>
+                <a href="mailto:orderinstant088@gmail.com" className="text-gray-400 hover:text-brand-orange transition-colors duration-200">orderinstant088@gmail.com</a>
               </li>
             </ul>
           </div>

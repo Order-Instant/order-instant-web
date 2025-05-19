@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Eye, EyeOff, Mail, Lock, User, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const API_BASE_URL = 'http://127.0.0.1:8000';
+const SERVER_IP = import.meta.env.VITE_SERVER_IP;
 
 const Auth = () => {
   const { toast } = useToast();
@@ -51,7 +51,7 @@ const Auth = () => {
     setIsSubmittingLogin(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/login`, {
+      const response = await fetch(`${SERVER_IP}/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -111,7 +111,7 @@ const Auth = () => {
     setIsSubmittingSignup(true);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/signup`, {
+      const response = await fetch(`${SERVER_IP}/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -171,7 +171,7 @@ const Auth = () => {
             Your <span className="text-brand-orange">Account</span>
           </h1>
           <p className="text-lg opacity-90 mb-8 animate-fade-in">
-            Log in to your OrderInstant account or create a new one to start shipping.
+            Log in to your OrderInstant account or create a new one to effortlessly manage your shipments, track orders in real-time, and enjoy a seamless shipping experience tailored to your needs.
           </p>
         </div>
       </HeroSection>
