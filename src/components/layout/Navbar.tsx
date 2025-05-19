@@ -26,9 +26,9 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center" onClick={closeMenu}>
             <img 
-              src="/lovable-uploads/9d152b33-cf8e-4dac-87f2-b8d02ce79bd3.png" 
+              src="/lovable-uploads/logo.png" 
               alt="Order Instant Logo" 
-              className="h-10" 
+              className="h-10"
             />
           </Link>
           
