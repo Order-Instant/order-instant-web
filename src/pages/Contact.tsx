@@ -83,9 +83,8 @@ const Contact = () => {
                 <div>
                   <h3 className="font-semibold mb-1">Our Location</h3>
                   <address className="not-italic text-gray-600">
-                    123 Delivery Street<br />
-                    Shipping City, SC 12345<br />
-                    United States
+                    Samakhusi-3<br />
+                    Kathmandu, Nepal
                   </address>
                 </div>
               </div>
@@ -95,10 +94,9 @@ const Contact = () => {
                   <Phone className="h-6 w-6 text-brand-orange" />
                 </div>
                 <div>
-                  <h3 className="font-semibold mb-1">Phone</h3>
+                  <h3 className="font-semibold mb-1">Telephone</h3>
                   <p className="text-gray-600">
-                    Customer Service: <a href="tel:+1-800-123-4567" className="text-brand-orange hover:underline">+1-800-123-4567</a><br />
-                    Business Inquiries: <a href="tel:+1-800-765-4321" className="text-brand-orange hover:underline">+1-800-765-4321</a>
+                    Customer Service: <a href="tel:01-4974691" className="text-brand-orange hover:underline">01-4974691</a><br />
                   </p>
                 </div>
               </div>
@@ -110,8 +108,7 @@ const Contact = () => {
                 <div>
                   <h3 className="font-semibold mb-1">Email</h3>
                   <p className="text-gray-600">
-                    General Inquiries: <a href="mailto:info@orderinstant.com" className="text-brand-orange hover:underline">info@orderinstant.com</a><br />
-                    Customer Support: <a href="mailto:support@orderinstant.com" className="text-brand-orange hover:underline">support@orderinstant.com</a>
+                    Customer Support: <a href="mailto:orderinstant088@gmail.com" className="text-brand-orange hover:underline">orderinstant088@gmail.com</a><br />
                   </p>
                 </div>
               </div>

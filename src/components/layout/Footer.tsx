@@ -12,14 +12,14 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <div className="flex items-center mb-4">
-              <Package className="h-8 w-8 text-brand-orange" />
-              <span className="ml-2 text-xl font-bold">Order<span className="text-brand-orange">Instant</span></span>
+              <img className="h-12 w-15 text-brand-orange" src='/lovable-uploads/logo.png' />
+              <span className="ml-2 text-xl font-bold">Order <span className="text-brand-orange">Instant</span></span>
             </div>
             <p className="text-gray-400 mb-4">
               Fast, reliable delivery services for all your shipping needs. Local and international solutions for businesses and individuals.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-brand-orange transition-colors duration-200">
+              <a href="https://www.facebook.com/Nisabda69" className="text-gray-400 hover:text-brand-orange transition-colors duration-200" target='_black'>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
                   <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
                 </svg>
@@ -99,15 +99,15 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-brand-orange mr-2 mt-1" />
-                <span className="text-gray-400">123 Delivery Street, Shipping City, SC 12345, United States</span>
+                <span className="text-gray-400">Samakhusi-3 Kathmandu,Nepal</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 text-brand-orange mr-2" />
-                <a href="tel:+1-800-123-4567" className="text-gray-400 hover:text-brand-orange transition-colors duration-200">+1-800-123-4567</a>
+                <a href="tel:+1-800-123-4567" className="text-gray-400 hover:text-brand-orange transition-colors duration-200">Tel. 01-4974691</a>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 text-brand-orange mr-2" />
-                <a href="mailto:info@orderinstant.com" className="text-gray-400 hover:text-brand-orange transition-colors duration-200">info@orderinstant.com</a>
+                <a href="mailto:info@orderinstant.com" className="text-gray-400 hover:text-brand-orange transition-colors duration-200">orderinstant088@gmail.com</a>
               </li>
             </ul>
           </div>
@@ -116,7 +116,7 @@ const Footer = () => {
         {/* Bottom */}
         <div className="border-t border-gray-800 pt-6 mt-6 flex flex-col md:flex-row justify-between items-center">
           <p className="text-gray-500 text-sm mb-4 md:mb-0">
-            © {currentYear} OrderInstant. All rights reserved.
+            © {currentYear} Order Instant. All rights reserved.
           </p>
           <div className="flex space-x-6 text-sm">
             <a href="#" className="text-gray-500 hover:text-brand-orange transition-colors duration-200">Terms of Service</a>
