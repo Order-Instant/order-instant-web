@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Section, HeroSection } from "@/components/ui/containers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,7 +14,7 @@ const Account = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('login');
 
-  const naviate = useNavigate();
+  const navigate = useNavigate();
 
   // Login form state
   const [loginData, setLoginData] = useState({
@@ -65,7 +65,7 @@ const Account = () => {
       if (response.ok) {
         if (data.token) {
           localStorage.setItem('user_jwt', data.token);
-          naviate("/account");
+          navigate("/account");
         }
 
         toast({
@@ -160,6 +160,13 @@ const Account = () => {
     }
   };
 
+  useEffect(() => {
+    const token = localStorage.getItem('user_jwt') || sessionStorage.getItem('user_jwt');
+    if (!token) {
+      navigate('/auth');
+    }
+  }, [navigate]);
+
   return (
     <>
       <Section className="bg-white pt-20 pb-5">
@@ -181,7 +188,8 @@ const Account = () => {
               className="bg-red-500 hover:bg-red-600 text-white"
               onClick={() => {
                 localStorage.removeItem('user_jwt');
-                naviate('/account'); // optionally redirect to login or home
+                sessionStorage.removeItem('user_jwt');
+                navigate('/auth'); // optionally redirect to login or home
                 toast({
                   title: "Logged Out",
                   description: "You have been successfully logged out.",

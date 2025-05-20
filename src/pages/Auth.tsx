@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Section, HeroSection } from "@/components/ui/containers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,8 +14,8 @@ const Auth = () => {
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('login');
 
-  const naviate = useNavigate();
-  
+  const navigate = useNavigate();
+
   // Login form state
   const [loginData, setLoginData] = useState({
     email: '',
@@ -23,7 +23,8 @@ const Auth = () => {
   });
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [isSubmittingLogin, setIsSubmittingLogin] = useState(false);
-  
+  const [rememberMe, setRememberMe] = useState(false);  // <---- New state
+
   // Signup form state
   const [signupData, setSignupData] = useState({
     firstName: '',
@@ -35,17 +36,17 @@ const Auth = () => {
   const [showSignupPassword, setShowSignupPassword] = useState(false);
   const [showSignupConfirmPassword, setShowSignupConfirmPassword] = useState(false);
   const [isSubmittingSignup, setIsSubmittingSignup] = useState(false);
-  
+
   const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setLoginData(prev => ({ ...prev, [name]: value }));
   };
-  
+
   const handleSignupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSignupData(prev => ({ ...prev, [name]: value }));
   };
-  
+
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmittingLogin(true);
@@ -64,8 +65,12 @@ const Auth = () => {
 
       if (response.ok) {
         if (data.token) {
-          localStorage.setItem('user_jwt', data.token);
-          naviate("/account");
+          if (rememberMe) {
+            localStorage.setItem('user_jwt', data.token);
+          } else {
+            sessionStorage.setItem('user_jwt', data.token);
+          }
+          navigate("/account");
         }
 
         toast({
@@ -77,7 +82,6 @@ const Auth = () => {
             </div>
           ),
         });
-        // Optional: redirect or update UI here
       } else {
         toast({
           title: "Login Failed",
@@ -95,7 +99,7 @@ const Auth = () => {
       setIsSubmittingLogin(false);
     }
   };
-  
+
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -107,7 +111,7 @@ const Auth = () => {
       });
       return;
     }
-    
+
     setIsSubmittingSignup(true);
 
     try {
@@ -127,21 +131,27 @@ const Auth = () => {
       if (response.ok) {
         toast({
           title: "Account Created",
-          description: data.message || "Welcome to OrderInstant! You can now log in.",
+          description: data.message || "Welcome to OrderInstant! Please verify OTP.",
           action: (
             <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
               <Check className="h-5 w-5 text-white" />
             </div>
           ),
         });
-        setActiveTab('login');
-        setSignupData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
+
+        // Redirect with type and payload to otp-verification
+        navigate('/otp-verification', {
+          state: {
+            type: 'create-user',
+            payload: {
+              email: signupData.email,
+              firstName: signupData.firstName,
+              lastName: signupData.lastName,
+              password: signupData.password,
+            }
+          }
         });
+
       } else {
         toast({
           title: "Signup Failed",
@@ -159,6 +169,13 @@ const Auth = () => {
       setIsSubmittingSignup(false);
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem('user_jwt') || sessionStorage.getItem('user_jwt');
+    if (token) {
+      navigate('/account');
+    }
+  }, [navigate]);
 
   return (
     <>
@@ -186,7 +203,7 @@ const Auth = () => {
                   <TabsTrigger value="login">Login</TabsTrigger>
                   <TabsTrigger value="signup">Sign Up</TabsTrigger>
                 </TabsList>
-                
+
                 <TabsContent value="login" className="mt-0">
                   <form onSubmit={handleLoginSubmit}>
                     <div className="space-y-4">
@@ -208,7 +225,7 @@ const Auth = () => {
                           />
                         </div>
                       </div>
-                      
+
                       <div>
                         <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 mb-1">
                           Password
@@ -238,7 +255,7 @@ const Auth = () => {
                           </button>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center justify-between">
                         <div className="flex items-center">
                           <input 
@@ -246,6 +263,8 @@ const Auth = () => {
                             name="remember-me" 
                             type="checkbox" 
                             className="h-4 w-4 text-brand-orange focus:ring-brand-orange border-gray-300 rounded" 
+                            checked={rememberMe}
+                            onChange={(e) => setRememberMe(e.target.checked)}
                           />
                           <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                             Remember me
@@ -257,7 +276,7 @@ const Auth = () => {
                           </a>
                         </div>
                       </div>
-                      
+
                       <Button 
                         type="submit" 
                         className="w-full bg-brand-orange hover:bg-brand-dark-orange text-white"
@@ -268,7 +287,7 @@ const Auth = () => {
                     </div>
                   </form>
                 </TabsContent>
-                
+
                 <TabsContent value="signup" className="mt-0">
                   <form onSubmit={handleSignupSubmit}>
                     <div className="space-y-4">
@@ -282,10 +301,10 @@ const Auth = () => {
                             <Input 
                               id="firstName" 
                               name="firstName" 
-                              placeholder="First name"
+                              placeholder="John"
                               value={signupData.firstName}
                               onChange={handleSignupChange}
-                              className="pl-10" 
+                              className="pl-10"
                               required 
                             />
                           </div>
@@ -294,17 +313,21 @@ const Auth = () => {
                           <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
                             Last Name
                           </label>
-                          <Input 
-                            id="lastName" 
-                            name="lastName" 
-                            placeholder="Last name"
-                            value={signupData.lastName}
-                            onChange={handleSignupChange}
-                            required 
-                          />
+                          <div className="relative">
+                            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                            <Input 
+                              id="lastName" 
+                              name="lastName" 
+                              placeholder="Doe"
+                              value={signupData.lastName}
+                              onChange={handleSignupChange}
+                              className="pl-10"
+                              required 
+                            />
+                          </div>
                         </div>
                       </div>
-                      
+
                       <div>
                         <label htmlFor="signup-email" className="block text-sm font-medium text-gray-700 mb-1">
                           Email Address
@@ -318,12 +341,12 @@ const Auth = () => {
                             placeholder="your@email.com"
                             value={signupData.email}
                             onChange={handleSignupChange}
-                            className="pl-10" 
+                            className="pl-10"
                             required 
                           />
                         </div>
                       </div>
-                      
+
                       <div>
                         <label htmlFor="signup-password" className="block text-sm font-medium text-gray-700 mb-1">
                           Password
@@ -334,10 +357,10 @@ const Auth = () => {
                             id="signup-password" 
                             name="password" 
                             type={showSignupPassword ? "text" : "password"} 
-                            placeholder="Password"
+                            placeholder="Your password"
                             value={signupData.password}
                             onChange={handleSignupChange}
-                            className="pl-10 pr-10" 
+                            className="pl-10 pr-10"
                             required 
                           />
                           <button 
@@ -353,7 +376,7 @@ const Auth = () => {
                           </button>
                         </div>
                       </div>
-                      
+
                       <div>
                         <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700 mb-1">
                           Confirm Password
@@ -367,7 +390,7 @@ const Auth = () => {
                             placeholder="Confirm password"
                             value={signupData.confirmPassword}
                             onChange={handleSignupChange}
-                            className="pl-10 pr-10" 
+                            className="pl-10 pr-10"
                             required 
                           />
                           <button 
@@ -383,13 +406,13 @@ const Auth = () => {
                           </button>
                         </div>
                       </div>
-                      
+
                       <Button 
                         type="submit" 
                         className="w-full bg-brand-orange hover:bg-brand-dark-orange text-white"
                         disabled={isSubmittingSignup}
                       >
-                        {isSubmittingSignup ? 'Creating Account...' : 'Sign Up'}
+                        {isSubmittingSignup ? 'Signing Up...' : 'Sign Up'}
                       </Button>
                     </div>
                   </form>
