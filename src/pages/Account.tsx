@@ -51,6 +51,7 @@ const Account = () => {
         } else {
           localStorage.removeItem('user_jwt');
           sessionStorage.removeItem('user_jwt');
+          console.log(data);
           navigate('/auth');
           toast({
             title: "Session Expired",
