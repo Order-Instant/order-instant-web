@@ -118,45 +118,53 @@ const Account = () => {
     <>
       <Section className="bg-white pt-20 pb-5">
         <div className="w-full">
-          <Card className="p-6 bg-gray-100 text-black flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <img
-                src={userInfo?.profilePictureUrl || "https://static.vecteezy.com/system/resources/previews/010/260/479/non_2x/default-avatar-profile-icon-of-social-media-user-in-clipart-style-vector.jpg"}
-                alt="User Profile"
-                className="h-20 w-20 rounded-full object-cover border border-gray-300"
-              />
-              <div>
-                <h2 className="text-xl font-semibold">{userInfo ? `${userInfo.firstName} ${userInfo.lastName}` : 'Loading...'}</h2>
-                <p className="text-sm">{userInfo?.email}</p>
-                <p className="text-xs mt-1">
-                  {userInfo && `Account since ${new Intl.DateTimeFormat('en-US', {
-                    year: 'numeric', month: 'long', day: 'numeric'
-                  }).format(new Date(userInfo.createdAt))}`}
-                </p>
+          <Card className="p-4 bg-gray-100 text-black">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
+
+              {/* Left: Photo + Name + Email */}
+              <div className="flex items-center gap-4">
+                <img
+                  src={userInfo?.profilePictureUrl || "https://cdn.prod.website-files.com/5e51c674258ffe10d286d30a/5e535c632b568a7abf1af4de_peep-92.png"}
+                  alt="User Profile"
+                  className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border border-gray-300"
+                />
+                <div className="flex flex-col">
+                  <h2 className="text-base sm:text-xl font-semibold">
+                    {userInfo ? `${userInfo.firstName} ${userInfo.lastName}` : 'Loading...'}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-gray-700">{userInfo?.email}</p>
+                </div>
               </div>
+
+              <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4 text-right sm:text-left">
+                <Button
+                  className="bg-red-500 hover:bg-red-600 text-white mt-2 sm:mt-0 w-full sm:w-auto"
+                  onClick={() => {
+                    localStorage.removeItem('user_jwt');
+                    sessionStorage.removeItem('user_jwt');
+                    setUserInfo(null);
+                    navigate('/auth');
+                    toast({
+                      title: "Logged Out",
+                      description: "You have been successfully logged out.",
+                      action: (
+                        <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
+                          <Check className="h-5 w-5 text-white" />
+                        </div>
+                      ),
+                    });
+                  }}
+                >
+                  LOGOUT
+                  <LogOut className="w-5 h-5 ml-2" />
+                </Button>
+              </div>
+
             </div>
-            <Button
-              className="bg-red-500 hover:bg-red-600 text-white"
-              onClick={() => {
-                localStorage.removeItem('user_jwt');
-                sessionStorage.removeItem('user_jwt');
-                setUserInfo(null);
-                navigate('/auth');
-                toast({
-                  title: "Logged Out", description: "You have been successfully logged out.", action: (
-                    <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
-                      <Check className="h-5 w-5 text-white" />
-                    </div>
-                  ),
-                });
-              }}
-            >
-              LOGOUT
-              <LogOut className="w-5 h-5" />
-            </Button>
           </Card>
         </div>
       </Section>
+
 
       <Section className="bg-white pb-20 pt-0">
         <div className="w-full">
