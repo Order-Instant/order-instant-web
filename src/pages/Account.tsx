@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
-import { KeyRound, Mail, Trash2, User } from 'lucide-react';
+import { Check, KeyRound, Mail, Trash2, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const SERVER_IP = import.meta.env.VITE_SERVER_IP;
@@ -51,7 +51,6 @@ const Account = () => {
         } else {
           localStorage.removeItem('user_jwt');
           sessionStorage.removeItem('user_jwt');
-          console.log(data);
           navigate('/auth');
           toast({
             title: "Session Expired",
@@ -138,7 +137,13 @@ const Account = () => {
                 sessionStorage.removeItem('user_jwt');
                 setUserInfo(null);
                 navigate('/auth');
-                toast({ title: "Logged Out", description: "You have been successfully logged out." });
+                toast({
+                  title: "Logged Out", description: "You have been successfully logged out.", action: (
+                    <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
+                      <Check className="h-5 w-5 text-white" />
+                    </div>
+                  ),
+                });
               }}
             >
               Logout
