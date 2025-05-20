@@ -10,7 +10,7 @@ import { Check } from "lucide-react";
 const SERVER_IP = import.meta.env.VITE_SERVER_IP;
 
 type OTPVerificationState = {
-  type: "email-verification" | "forgot-password";
+  type: "email-verification" | "forgot-password" | "account-delete";
   payload?: Record<string, any>;
 };
 
@@ -101,6 +101,17 @@ const OTPVerification = () => {
           redirectPath = "/auth"; // login page
           break;
 
+        case "account-delete":
+          endpoint = `${SERVER_IP}/account-delete`;
+          method = "DELETE";
+          bodyData = {
+            user_jwt: payload?.user_jwt,
+            otp: otpCode,
+          };
+          successMessage = "Account deleted successfully. We're sorry to see you go.";
+          redirectPath = "/auth"; // login page
+          break;
+
         default:
           throw new Error("Invalid operation type");
       }
@@ -114,6 +125,11 @@ const OTPVerification = () => {
       const data = await response.json();
 
       if (response.ok) {
+        if (type === "account-delete") {
+          localStorage.removeItem('user_jwt');
+          sessionStorage.removeItem('user_jwt');
+        }
+        
         toast({
           title: "Success",
           description: successMessage,

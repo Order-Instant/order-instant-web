@@ -286,7 +286,7 @@ const Track = () => {
       >
         <div className="max-w-3xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
-            Track Your Shipment
+            TRACK YOUR SHIPMENT
           </h1>
           <p className="text-lg md:text-xl opacity-90 mb-8 animate-fade-in">
             Enter your tracking number to get real-time updates on your package location and status.
@@ -306,7 +306,7 @@ const Track = () => {
                 className="bg-white hover:bg-gray-100 text-brand-orange" 
                 disabled={isSearching}
               >
-                {isSearching ? 'Searching...' : 'Track Package'}
+                {isSearching ? 'SEARCHING...' : 'TRACK PACKAGE'}
               </Button>
             </div>
             <div className="text-white/70 text-sm mt-2 text-center md:text-left">
@@ -339,7 +339,7 @@ const Track = () => {
                       className="text-sm border-gray-300"
                       onClick={() => setTrackingResult(null)}
                     >
-                      Track Another Package
+                      TRACK ANOTHER PACKAGE
                     </Button>
                   </div>
                 </div>
@@ -406,7 +406,7 @@ const Track = () => {
         ) : (
           <div className="max-w-3xl mx-auto text-center">
             <Package className="h-16 w-16 text-gray-400 mb-4 mx-auto" />
-            <h2 className="text-2xl font-bold mb-2">No Tracking Information</h2>
+            <h2 className="text-2xl font-bold mb-2">NO TRACKING INFORMATION</h2>
             <p className="text-gray-600 mb-6">
               Enter your tracking number above to see the status and location of your shipment.
             </p>
@@ -417,7 +417,7 @@ const Track = () => {
       {/* FAQ Section */}
       <Section>
         <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold mb-6 text-center">Tracking FAQs</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">TRACKING FAQs</h2>
           
           <div className="space-y-6">
             <div>

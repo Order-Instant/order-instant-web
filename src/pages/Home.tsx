@@ -18,7 +18,7 @@ const Home = () => {
       >
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 animate-fade-in">
-            Fast, Reliable <span className="text-brand-orange">Delivery</span> Services
+            FAST, RELIABLE <span className="text-brand-orange">DELIVERY</span> SERVICES
           </h1>
           <p className="text-lg md:text-xl opacity-90 mb-8 animate-fade-in">
             Whether it's across town or across the world, we deliver your packages 
@@ -27,12 +27,12 @@ const Home = () => {
           <div className="flex flex-wrap gap-4 animate-fade-in">
             <Link to="/shipping">
               <Button size="lg" className="bg-brand-orange hover:bg-brand-dark-orange text-white">
-                Ship Now
+                SHIP NOW
               </Button>
             </Link>
             <Link to="/track">
               <Button size="lg" variant="outline" className="bg-white/10 text-white hover:bg-white/20 border-white/20">
-                Track Package
+                TRACK PACKAGE
               </Button>
             </Link>
           </div>
@@ -42,7 +42,7 @@ const Home = () => {
       {/* Services Preview */}
       <Section className="bg-gray-50">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Delivery Solutions</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">OUR DELIVERY SOLUTIONS</h2>
           <p className="max-w-2xl mx-auto text-gray-600">
             Choose the service that best fits your shipping needs.
           </p>
@@ -119,7 +119,7 @@ const Home = () => {
       <Section>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Choose Order <span className="text-brand-orange">Instant</span>?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">WHY CHOOSE ORDER <span className="text-brand-orange">INSTANT</span>?</h2>
             <p className="text-gray-600 mb-8">
               We've built our reputation on reliability, speed, and customer satisfaction. When you ship with us, you're choosing a partner who cares about your delivery as much as you do.
             </p>
@@ -194,7 +194,7 @@ const Home = () => {
       {/* How It Works */}
       <Section className="bg-gray-50">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">How It Works</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">HOW IT WORKS</h2>
           <p className="max-w-2xl mx-auto text-gray-600">
             Shipping with OrderInstant is quick and easy. Follow these simple steps:
           </p>
@@ -242,7 +242,7 @@ const Home = () => {
       {/* Customer Testimonials */}
       <Section>
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">What Our Customers Say</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">WHAT OUR CUSTOMERS SAY</h2>
           <p className="max-w-2xl mx-auto text-gray-600">
             Don't take our word for it – hear from some of our satisfied customers.
           </p>
@@ -250,8 +250,8 @@ const Home = () => {
 
         <Tabs defaultValue="businesses" className="w-full max-w-4xl mx-auto">
           <TabsList className="grid grid-cols-2 mb-8">
-            <TabsTrigger value="businesses">Businesses</TabsTrigger>
-            <TabsTrigger value="individuals">Individuals</TabsTrigger>
+            <TabsTrigger value="businesses">BUSINESSES</TabsTrigger>
+            <TabsTrigger value="individuals">INDIVIDUALS</TabsTrigger>
           </TabsList>
           
           <TabsContent value="businesses" className="mt-0">
@@ -375,19 +375,19 @@ const Home = () => {
       <section className="bg-brand-orange py-16 text-white">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Ship with Confidence?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">READY TO SHIP WITH CONFIDENCE?</h2>
             <p className="text-xl mb-8 opacity-90">
               Join thousands of satisfied customers who trust OrderInstant with their shipping needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/account">
                 <Button size="lg" className="bg-white text-brand-orange hover:bg-gray-100">
-                  Create Account
+                  CREATE ACCOUNT
                 </Button>
               </Link>
               <Link to="/shipping">
                 <Button size="lg" className="bg-white text-brand-orange hover:bg-gray-100">
-                  Ship Now
+                  SHIP NOW
                 </Button>
               </Link>
             </div>

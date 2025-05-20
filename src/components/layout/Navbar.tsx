@@ -35,16 +35,16 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/" className={`font-medium hover:text-brand-orange transition-colors duration-200 ${isActive('/') ? 'text-brand-orange' : 'text-gray-700'}`}>
-              Home
+              HOME
             </Link>
             <Link to="/services" className={`font-medium hover:text-brand-orange transition-colors duration-200 ${isActive('/services') ? 'text-brand-orange' : 'text-gray-700'}`}>
-              Services
+              SERVICES
             </Link>
             <Link to="/contact" className={`font-medium hover:text-brand-orange transition-colors duration-200 ${isActive('/contact') ? 'text-brand-orange' : 'text-gray-700'}`}>
-              Contact
+              CONTACT
             </Link>
             <Link to="/track" className={`font-medium hover:text-brand-orange transition-colors duration-200 ${isActive('/track') ? 'text-brand-orange' : 'text-gray-700'}`}>
-              Track
+              TRACK
             </Link>
             <Link to="/account" className="ml-3">
               <Button variant="outline" className="border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white">

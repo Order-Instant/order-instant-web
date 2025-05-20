@@ -18,7 +18,7 @@ const Services = () => {
       >
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
-            Our <span className="text-brand-orange">Delivery</span> Services
+            OUR <span className="text-brand-orange">DELIVERY</span> SERVICES
           </h1>
           <p className="text-lg opacity-90 mb-8 animate-fade-in">
             We offer a range of shipping options to meet all your delivery needs, 
@@ -243,7 +243,7 @@ const Services = () => {
       {/* Specialized Services */}
       <Section className="bg-gray-50">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Specialized Solutions</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">SPECIALIZED SOLUTIONS</h2>
           <p className="max-w-2xl mx-auto text-gray-600">
             Beyond our standard services, we offer specialized shipping solutions for specific needs.
           </p>
@@ -319,7 +319,7 @@ const Services = () => {
       {/* FAQs */}
       <Section>
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">FREQUENTLY ASKED QUESTIONS</h2>
           <p className="max-w-2xl mx-auto text-gray-600">
             Find answers to common questions about our shipping services.
           </p>
@@ -371,19 +371,19 @@ const Services = () => {
       <section className="bg-brand-orange py-16 text-white">
         <div className="container-custom">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Start Shipping Today</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">START SHIPPING TODAY</h2>
             <p className="text-xl mb-8 opacity-90">
               Experience the difference with OrderInstant's reliable delivery services.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/account">
                 <Button size="lg" className="bg-white text-brand-orange hover:bg-gray-100">
-                  Create Account
+                  CREATE ACCOUNT
                 </Button>
               </Link>
               <Link to="/contact">
                 <Button size="lg" className="bg-white text-brand-orange hover:bg-gray-100">
-                  Contact Sales
+                  CONTACT SALES
                 </Button>
               </Link>
             </div>

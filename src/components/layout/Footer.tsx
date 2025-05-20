@@ -13,7 +13,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center mb-4">
               <img className="h-12 w-15 text-brand-orange rounded" src='/lovable-uploads/logo.png' />
-              <span className="ml-2 text-xl font-bold">Order <span className="text-brand-orange">Instant</span></span>
+              <span className="ml-2 text-xl font-bold">ORDER <span className="text-brand-orange">INSTANT</span></span>
             </div>
             <p className="text-gray-400 mb-4">
               Fast, reliable delivery services for all your shipping needs. Local and international solutions for businesses and individuals.
@@ -48,7 +48,7 @@ const Footer = () => {
           
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4">QUICK LINKS</h3>
             <ul className="space-y-2">
               <li>
                 <Link to="/" className="text-gray-400 hover:text-brand-orange transition-colors duration-200">Home</Link>
@@ -73,7 +73,7 @@ const Footer = () => {
           
           {/* Services */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Our Services</h3>
+            <h3 className="text-lg font-semibold mb-4">OUR SERVICES</h3>
             <ul className="space-y-2">
               <li>
                 <a href="#" className="text-gray-400 hover:text-brand-orange transition-colors duration-200">Same Day Delivery</a>
@@ -95,7 +95,7 @@ const Footer = () => {
           
           {/* Contact */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
+            <h3 className="text-lg font-semibold mb-4">CONTACT US</h3>
             <ul className="space-y-4">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 text-brand-orange mr-2 mt-1" />

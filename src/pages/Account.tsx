@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
-import { Check, KeyRound, Mail, Trash2, User } from 'lucide-react';
+import { Check, DownloadCloud, KeyRound, LogOut, Mail, Trash2, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const SERVER_IP = import.meta.env.VITE_SERVER_IP;
@@ -77,7 +77,7 @@ const Account = () => {
     if (!token) return;
 
     try {
-      const res = await fetch(`${SERVER_IP}/update-user`, {
+      const res = await fetch(`${SERVER_IP}/update-user-info`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -88,10 +88,15 @@ const Account = () => {
 
       if (res.ok) {
         const updated = await res.json();
-        setUserInfo(updated);
+        setUserInfo(updated.user);
         toast({
           title: "Profile Updated",
           description: "Your profile information has been saved.",
+          action: (
+            <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
+              <Check className="h-5 w-5 text-white" />
+            </div>
+          ),
         });
       } else {
         toast({
@@ -113,7 +118,7 @@ const Account = () => {
     <>
       <Section className="bg-white pt-20 pb-5">
         <div className="w-full">
-          <Card className="p-10 bg-gray-100 text-black flex items-center justify-between">
+          <Card className="p-6 bg-gray-100 text-black flex items-center justify-between">
             <div className="flex items-center gap-6">
               <img
                 src={userInfo?.profilePictureUrl || "https://static.vecteezy.com/system/resources/previews/010/260/479/non_2x/default-avatar-profile-icon-of-social-media-user-in-clipart-style-vector.jpg"}
@@ -146,7 +151,8 @@ const Account = () => {
                 });
               }}
             >
-              Logout
+              LOGOUT
+              <LogOut className="w-5 h-5" />
             </Button>
           </Card>
         </div>
@@ -158,8 +164,8 @@ const Account = () => {
             <CardContent className="p-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="grid w-full grid-cols-2 mb-6">
-                  <TabsTrigger value="setting">Setting</TabsTrigger>
-                  <TabsTrigger value="order">Order</TabsTrigger>
+                  <TabsTrigger value="setting">SETTING</TabsTrigger>
+                  <TabsTrigger value="order">ORDER</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="setting" className="mt-0">
@@ -213,25 +219,77 @@ const Account = () => {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="pl-10"
+                            disabled
                             required
                           />
                         </div>
                       </div>
 
                       <Button type="submit" className="w-full bg-brand-orange hover:bg-brand-dark-orange text-white">
+                        <DownloadCloud className='w-5 h-5' />
                         SAVE CHANGES
                       </Button>
 
                       <div className="flex flex-wrap gap-4 justify-between">
-                        <Button className="flex-1 min-w-[150px] bg-yellow-500 hover:bg-yellow-600 text-white">
+                        <Button onClick={() => navigate("/forgot-password")} className="flex-1 min-w-[150px] bg-yellow-500 hover:bg-yellow-600 text-white">
                           <KeyRound className="mr-2 h-4 w-4" />
                           CHANGE PASSWORD
                         </Button>
 
-                        <Button className="flex-1 min-w-[150px] bg-red-500 hover:bg-red-600 text-white">
+                        <Button
+                          className="flex-1 min-w-[150px] bg-red-500 hover:bg-red-600 text-white"
+                          onClick={async () => {
+                            const token = localStorage.getItem('user_jwt') || sessionStorage.getItem('user_jwt');
+                            if (!token) {
+                              toast({
+                                title: "Not logged in",
+                                description: "Please login first.",
+                                variant: "destructive",
+                              });
+                              navigate('/auth');
+                              return;
+                            }
+
+                            try {
+                              const res = await fetch(`${SERVER_IP}/account-delete-request`, {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ token }),
+                              });
+
+                              if (res.ok) {
+                                toast({
+                                  title: "OTP Sent",
+                                  description: "Check your email to verify account deletion.",
+                                });
+                                navigate('/otp-verification', {
+                                  state: {
+                                    type: 'account-delete',
+                                    payload: { user_jwt: token },
+                                  },
+                                });
+                              } else {
+                                const error = await res.json();
+                                toast({
+                                  title: "Request Failed",
+                                  description: error.message || "Could not send OTP.",
+                                  variant: "destructive",
+                                });
+                              }
+                            } catch (err) {
+                              toast({
+                                title: "Network Error",
+                                description: "Could not contact server.",
+                                variant: "destructive",
+                              });
+                            }
+                          }}
+
+                        >
                           <Trash2 className="mr-2 h-4 w-4" />
                           DELETE ACCOUNT
                         </Button>
+
                       </div>
 
 

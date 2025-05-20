@@ -59,7 +59,7 @@ const Contact = () => {
       >
         <div className="max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
-            Get in <span className="text-brand-orange">Touch</span>
+            GET IN <span className="text-brand-orange">TOUCH</span>
           </h1>
           <p className="text-lg opacity-90 mb-8 animate-fade-in">
             We’re here to support you with every aspect of your shipping journey—whether you need a personalized quote, real-time tracking updates, customs clearance guidance, or answers about our logistics solutions and partnerships.
@@ -72,7 +72,7 @@ const Contact = () => {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
           {/* Contact Details */}
           <div className="lg:col-span-2">
-            <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
+            <h2 className="text-2xl font-bold mb-6">CONTACT INFORMATION</h2>
             
             <div className="space-y-8">
               <div className="flex items-start">
@@ -131,7 +131,7 @@ const Contact = () => {
           {/* Contact Form */}
           <div className="lg:col-span-3">
             <div className="bg-white p-8 rounded-lg shadow-sm border">
-              <h2 className="text-2xl font-bold mb-6">Send Us a Message</h2>
+              <h2 className="text-2xl font-bold mb-6">SEND US A MESSAGE</h2>
               
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
@@ -214,7 +214,7 @@ const Contact = () => {
 
       {/* Map Section */}
       <Section className="bg-gray-50 pb-0">
-        <h2 className="text-2xl font-bold mb-6 text-center">Our Location</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">OUR LOCATION</h2>
         <div className="w-full h-96 bg-gray-300 rounded-t-lg overflow-hidden">
           {/* Placeholder for map - in a real app, you would integrate Google Maps or another mapping service here */}
           <div className="w-full h-full flex items-center justify-center bg-gray-200">
