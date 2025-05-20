@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
-import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const SERVER_IP = import.meta.env.VITE_SERVER_IP;
@@ -58,6 +58,11 @@ const ForgotPassword = () => {
                     title: "OTP Sent",
                     description: "An OTP has been sent to your email address.",
                     variant: "default",
+                    action: (
+                        <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
+                            <Check className="h-5 w-5 text-white" />
+                        </div>
+                    ),
                 });
 
                 // Navigate after success
