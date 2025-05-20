@@ -128,8 +128,11 @@ const OTPVerification = () => {
         if (type === "account-delete") {
           localStorage.removeItem('user_jwt');
           sessionStorage.removeItem('user_jwt');
+        }else if(type === "forgot-password"){
+          localStorage.removeItem('user_jwt');
+          sessionStorage.removeItem('user_jwt');
         }
-        
+
         toast({
           title: "Success",
           description: successMessage,

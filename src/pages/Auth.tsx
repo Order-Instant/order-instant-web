@@ -130,7 +130,7 @@ const Auth = () => {
 
       if (response.ok) {
         toast({
-          title: "Account Created",
+          title: "OTP sent",
           description: data.message || "Welcome to OrderInstant! Please verify OTP.",
           action: (
             <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
