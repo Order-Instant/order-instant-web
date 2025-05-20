@@ -93,7 +93,7 @@ const ForgotPassword = () => {
             <HeroSection className="py-16 bg-gray-100">
                 <div className="max-w-xl mx-auto text-center">
                     <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
-                        Forgot <span className="text-brand-orange">Password</span>
+                        FORGOT <span className="text-brand-orange">PASSWORD</span>
                     </h1>
                     <p className="text-lg opacity-90 mb-8 animate-fade-in">
                         Enter your email and new password to reset your password.
@@ -182,7 +182,7 @@ const ForgotPassword = () => {
                                     className="w-full bg-brand-orange hover:bg-brand-dark-orange text-white"
                                     disabled={isSubmitting}
                                 >
-                                    {isSubmitting ? 'Processing...' : 'Reset Password'}
+                                    {isSubmitting ? 'PROCESSING...' : 'RESET PASSWORD'}
                                 </Button>
                             </form>
                         </CardContent>

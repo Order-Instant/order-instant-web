@@ -185,7 +185,7 @@ const Auth = () => {
       >
         <div className="max-w-xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
-            Get <span className="text-brand-orange">Started</span>
+            GET <span className="text-brand-orange">STARTED</span>
           </h1>
           <p className="text-lg opacity-90 mb-8 animate-fade-in">
             Log in to your OrderInstant account or create a new one to effortlessly manage your shipments, track orders in real-time.
@@ -200,8 +200,8 @@ const Auth = () => {
             <CardContent className="p-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="grid w-full grid-cols-2 mb-6">
-                  <TabsTrigger value="login">Login</TabsTrigger>
-                  <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                  <TabsTrigger value="login">LOGIN</TabsTrigger>
+                  <TabsTrigger value="signup">SIGNUP</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="login" className="mt-0">
@@ -282,7 +282,7 @@ const Auth = () => {
                         className="w-full bg-brand-orange hover:bg-brand-dark-orange text-white"
                         disabled={isSubmittingLogin}
                       >
-                        {isSubmittingLogin ? 'Logging In...' : 'Log In'}
+                        {isSubmittingLogin ? 'LOGGING IN...' : 'LOGIN'}
                       </Button>
                     </div>
                   </form>
@@ -412,7 +412,7 @@ const Auth = () => {
                         className="w-full bg-brand-orange hover:bg-brand-dark-orange text-white"
                         disabled={isSubmittingSignup}
                       >
-                        {isSubmittingSignup ? 'Signing Up...' : 'Sign Up'}
+                        {isSubmittingSignup ? 'SIGNING UP...' : 'SIGNUP'}
                       </Button>
                     </div>
                   </form>

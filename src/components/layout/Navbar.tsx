@@ -48,12 +48,12 @@ const Navbar = () => {
             </Link>
             <Link to="/account" className="ml-3">
               <Button variant="outline" className="border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white">
-                Account
+                ACCOUNT
               </Button>
             </Link>
             <Link to="/shipping">
               <Button className="bg-brand-orange text-white hover:bg-brand-dark-orange">
-                Ship Now
+                SHIP NOW
               </Button>
             </Link>
           </div>

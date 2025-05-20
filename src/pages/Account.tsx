@@ -1,169 +1,111 @@
 import { useEffect, useState } from 'react';
-import { Section, HeroSection } from "@/components/ui/containers";
+import { Section } from "@/components/ui/containers";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
-import { Eye, EyeOff, Mail, Lock, User, Check } from 'lucide-react';
+import { KeyRound, Mail, Trash2, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const SERVER_IP = import.meta.env.VITE_SERVER_IP;
 
+interface UserInfo {
+  firstName: string;
+  lastName: string;
+  email: string;
+  createdAt: string;
+  profilePictureUrl?: string;
+}
+
 const Account = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [activeTab, setActiveTab] = useState('setting');
 
   useEffect(() => {
     const token = localStorage.getItem('user_jwt') || sessionStorage.getItem('user_jwt');
     if (!token) {
       navigate('/auth');
-    }
-  }, [navigate]);
-  
-  const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('login');
-
-  // Login form state
-  const [loginData, setLoginData] = useState({
-    email: '',
-    password: ''
-  });
-  const [showLoginPassword, setShowLoginPassword] = useState(false);
-  const [isSubmittingLogin, setIsSubmittingLogin] = useState(false);
-
-  // Signup form state
-  const [signupData, setSignupData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
-  });
-  const [showSignupPassword, setShowSignupPassword] = useState(false);
-  const [showSignupConfirmPassword, setShowSignupConfirmPassword] = useState(false);
-  const [isSubmittingSignup, setIsSubmittingSignup] = useState(false);
-
-  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setLoginData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSignupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setSignupData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleLoginSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmittingLogin(true);
-
-    try {
-      const response = await fetch(`${SERVER_IP}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: loginData.email,
-          password: loginData.password
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        if (data.token) {
-          localStorage.setItem('user_jwt', data.token);
-          navigate("/account");
-        }
-
-        toast({
-          title: "Login Successful",
-          description: data.message || "Welcome back to OrderInstant!",
-          action: (
-            <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
-              <Check className="h-5 w-5 text-white" />
-            </div>
-          ),
-        });
-        // Optional: redirect or update UI here
-      } else {
-        toast({
-          title: "Login Failed",
-          description: data.error || "Invalid email or password.",
-          variant: "destructive",
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Network Error",
-        description: "Could not connect to server.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsSubmittingLogin(false);
-    }
-  };
-
-  const handleSignupSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (signupData.password !== signupData.confirmPassword) {
-      toast({
-        title: "Passwords don't match",
-        description: "Please ensure your passwords match.",
-        variant: "destructive",
-      });
       return;
     }
 
-    setIsSubmittingSignup(true);
-
-    try {
-      const response = await fetch(`${SERVER_IP}/signup`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          firstName: signupData.firstName,
-          lastName: signupData.lastName,
-          email: signupData.email,
-          password: signupData.password
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast({
-          title: "Account Created",
-          description: data.message || "Welcome to OrderInstant! You can now log in.",
-          action: (
-            <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
-              <Check className="h-5 w-5 text-white" />
-            </div>
-          ),
+    const fetchUserInfo = async () => {
+      try {
+        const res = await fetch(`${SERVER_IP}/user-data`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` },
         });
-        setActiveTab('login');
-        setSignupData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          password: '',
-          confirmPassword: ''
-        });
-      } else {
+
+        if (res.ok) {
+          const data = await res.json();
+          setUserInfo(data);
+          setFirstName(data.firstName);
+          setLastName(data.lastName);
+          setEmail(data.email);
+        } else {
+          localStorage.removeItem('user_jwt');
+          sessionStorage.removeItem('user_jwt');
+          navigate('/auth');
+          toast({
+            title: "Session Expired",
+            description: "Please log in again.",
+            variant: "destructive",
+          });
+        }
+      } catch {
         toast({
-          title: "Signup Failed",
-          description: data.error || "Failed to create account.",
+          title: "Network Error",
+          description: "Could not fetch user info.",
           variant: "destructive",
         });
       }
-    } catch (error) {
+    };
+
+    fetchUserInfo();
+  }, [navigate, toast]);
+
+  const handleUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem('user_jwt') || sessionStorage.getItem('user_jwt');
+    if (!token) return;
+
+    try {
+      const res = await fetch(`${SERVER_IP}/update-user`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ firstName, lastName, email }),
+      });
+
+      if (res.ok) {
+        const updated = await res.json();
+        setUserInfo(updated);
+        toast({
+          title: "Profile Updated",
+          description: "Your profile information has been saved.",
+        });
+      } else {
+        toast({
+          title: "Update Failed",
+          description: "Could not update profile.",
+          variant: "destructive",
+        });
+      }
+    } catch {
       toast({
         title: "Network Error",
-        description: "Could not connect to server.",
+        description: "Could not update profile.",
         variant: "destructive",
       });
-    } finally {
-      setIsSubmittingSignup(false);
     }
   };
 
@@ -172,16 +114,20 @@ const Account = () => {
       <Section className="bg-white pt-20 pb-5">
         <div className="w-full">
           <Card className="p-10 bg-gray-100 text-black flex items-center justify-between">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
               <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-HmAlYRaMiTx6PqSGcL9ifkAFxWHVPvhiHQ&s"
+                src={userInfo?.profilePictureUrl || "https://static.vecteezy.com/system/resources/previews/010/260/479/non_2x/default-avatar-profile-icon-of-social-media-user-in-clipart-style-vector.jpg"}
                 alt="User Profile"
-                className="h-16 w-16 rounded-full object-cover border border-gray-300"
+                className="h-20 w-20 rounded-full object-cover border border-gray-300"
               />
               <div>
-                <h2 className="text-lg font-semibold">Rajesh Thapa</h2>
-                <p className="text-sm">rajesh@gmail.com</p>
-                <p className="text-xs mt-1">Account since Jan 15, 2024</p>
+                <h2 className="text-xl font-semibold">{userInfo ? `${userInfo.firstName} ${userInfo.lastName}` : 'Loading...'}</h2>
+                <p className="text-sm">{userInfo?.email}</p>
+                <p className="text-xs mt-1">
+                  {userInfo && `Account since ${new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric', month: 'long', day: 'numeric'
+                  }).format(new Date(userInfo.createdAt))}`}
+                </p>
               </div>
             </div>
             <Button
@@ -189,11 +135,9 @@ const Account = () => {
               onClick={() => {
                 localStorage.removeItem('user_jwt');
                 sessionStorage.removeItem('user_jwt');
-                navigate('/auth'); // optionally redirect to login or home
-                toast({
-                  title: "Logged Out",
-                  description: "You have been successfully logged out.",
-                });
+                setUserInfo(null);
+                navigate('/auth');
+                toast({ title: "Logged Out", description: "You have been successfully logged out." });
               }}
             >
               Logout
@@ -208,94 +152,12 @@ const Account = () => {
             <CardContent className="p-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="grid w-full grid-cols-2 mb-6">
-                  <TabsTrigger value="login">Login</TabsTrigger>
-                  <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                  <TabsTrigger value="setting">Setting</TabsTrigger>
+                  <TabsTrigger value="order">Order</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="login" className="mt-0">
-                  <form onSubmit={handleLoginSubmit}>
-                    <div className="space-y-4">
-                      <div>
-                        <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 mb-1">
-                          Email Address
-                        </label>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                          <Input
-                            id="login-email"
-                            name="email"
-                            type="email"
-                            placeholder="your@email.com"
-                            value={loginData.email}
-                            onChange={handleLoginChange}
-                            className="pl-10"
-                            required
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label htmlFor="login-password" className="block text-sm font-medium text-gray-700 mb-1">
-                          Password
-                        </label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                          <Input
-                            id="login-password"
-                            name="password"
-                            type={showLoginPassword ? "text" : "password"}
-                            placeholder="Your password"
-                            value={loginData.password}
-                            onChange={handleLoginChange}
-                            className="pl-10 pr-10"
-                            required
-                          />
-                          <button
-                            type="button"
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                            onClick={() => setShowLoginPassword(!showLoginPassword)}
-                          >
-                            {showLoginPassword ? (
-                              <EyeOff className="h-5 w-5" />
-                            ) : (
-                              <Eye className="h-5 w-5" />
-                            )}
-                          </button>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                          <input
-                            id="remember-me"
-                            name="remember-me"
-                            type="checkbox"
-                            className="h-4 w-4 text-brand-orange focus:ring-brand-orange border-gray-300 rounded"
-                          />
-                          <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                            Remember me
-                          </label>
-                        </div>
-                        <div className="text-sm">
-                          <a href="#" className="text-brand-orange hover:text-brand-dark-orange">
-                            Forgot password?
-                          </a>
-                        </div>
-                      </div>
-
-                      <Button
-                        type="submit"
-                        className="w-full bg-brand-orange hover:bg-brand-dark-orange text-white"
-                        disabled={isSubmittingLogin}
-                      >
-                        {isSubmittingLogin ? 'Logging In...' : 'Log In'}
-                      </Button>
-                    </div>
-                  </form>
-                </TabsContent>
-
-                <TabsContent value="signup" className="mt-0">
-                  <form onSubmit={handleSignupSubmit}>
+                <TabsContent value="setting" className="mt-0">
+                  <form onSubmit={handleUpdate}>
                     <div className="space-y-4">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
@@ -306,10 +168,9 @@ const Account = () => {
                             <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                             <Input
                               id="firstName"
-                              name="firstName"
-                              placeholder="First name"
-                              value={signupData.firstName}
-                              onChange={handleSignupChange}
+                              placeholder="John"
+                              value={firstName}
+                              onChange={(e) => setFirstName(e.target.value)}
                               className="pl-10"
                               required
                             />
@@ -319,105 +180,61 @@ const Account = () => {
                           <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
                             Last Name
                           </label>
-                          <Input
-                            id="lastName"
-                            name="lastName"
-                            placeholder="Last name"
-                            value={signupData.lastName}
-                            onChange={handleSignupChange}
-                            required
-                          />
+                          <div className="relative">
+                            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                            <Input
+                              id="lastName"
+                              placeholder="Doe"
+                              value={lastName}
+                              onChange={(e) => setLastName(e.target.value)}
+                              className="pl-10"
+                              required
+                            />
+                          </div>
                         </div>
                       </div>
 
                       <div>
-                        <label htmlFor="signup-email" className="block text-sm font-medium text-gray-700 mb-1">
+                        <label htmlFor="login-email" className="block text-sm font-medium text-gray-700 mb-1">
                           Email Address
                         </label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                           <Input
-                            id="signup-email"
-                            name="email"
+                            id="login-email"
                             type="email"
                             placeholder="your@email.com"
-                            value={signupData.email}
-                            onChange={handleSignupChange}
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className="pl-10"
                             required
                           />
                         </div>
                       </div>
 
-                      <div>
-                        <label htmlFor="signup-password" className="block text-sm font-medium text-gray-700 mb-1">
-                          Password
-                        </label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                          <Input
-                            id="signup-password"
-                            name="password"
-                            type={showSignupPassword ? "text" : "password"}
-                            placeholder="Password"
-                            value={signupData.password}
-                            onChange={handleSignupChange}
-                            className="pl-10 pr-10"
-                            required
-                          />
-                          <button
-                            type="button"
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                            onClick={() => setShowSignupPassword(!showSignupPassword)}
-                          >
-                            {showSignupPassword ? (
-                              <EyeOff className="h-5 w-5" />
-                            ) : (
-                              <Eye className="h-5 w-5" />
-                            )}
-                          </button>
-                        </div>
-                      </div>
-
-                      <div>
-                        <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700 mb-1">
-                          Confirm Password
-                        </label>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                          <Input
-                            id="confirm-password"
-                            name="confirmPassword"
-                            type={showSignupConfirmPassword ? "text" : "password"}
-                            placeholder="Confirm password"
-                            value={signupData.confirmPassword}
-                            onChange={handleSignupChange}
-                            className="pl-10 pr-10"
-                            required
-                          />
-                          <button
-                            type="button"
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                            onClick={() => setShowSignupConfirmPassword(!showSignupConfirmPassword)}
-                          >
-                            {showSignupConfirmPassword ? (
-                              <EyeOff className="h-5 w-5" />
-                            ) : (
-                              <Eye className="h-5 w-5" />
-                            )}
-                          </button>
-                        </div>
-                      </div>
-
-                      <Button
-                        type="submit"
-                        className="w-full bg-brand-orange hover:bg-brand-dark-orange text-white"
-                        disabled={isSubmittingSignup}
-                      >
-                        {isSubmittingSignup ? 'Creating Account...' : 'Sign Up'}
+                      <Button type="submit" className="w-full bg-brand-orange hover:bg-brand-dark-orange text-white">
+                        SAVE CHANGES
                       </Button>
+
+                      <div className="flex flex-wrap gap-4 justify-between">
+                        <Button className="flex-1 min-w-[150px] bg-yellow-500 hover:bg-yellow-600 text-white">
+                          <KeyRound className="mr-2 h-4 w-4" />
+                          CHANGE PASSWORD
+                        </Button>
+
+                        <Button className="flex-1 min-w-[150px] bg-red-500 hover:bg-red-600 text-white">
+                          <Trash2 className="mr-2 h-4 w-4" />
+                          DELETE ACCOUNT
+                        </Button>
+                      </div>
+
+
                     </div>
                   </form>
+                </TabsContent>
+
+                <TabsContent value="order" className="mt-0">
+                  <p className="text-sm text-gray-500">Order history will appear here.</p>
                 </TabsContent>
               </Tabs>
             </CardContent>

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { useToast } from "@/components/ui/use-toast";
+import { Check } from "lucide-react";
 
 const SERVER_IP = import.meta.env.VITE_SERVER_IP;
 
@@ -116,6 +117,11 @@ const OTPVerification = () => {
         toast({
           title: "Success",
           description: successMessage,
+          action: (
+            <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
+              <Check className="h-5 w-5 text-white" />
+            </div>
+          ),
         });
 
         setOtp(Array(6).fill(""));
@@ -148,7 +154,7 @@ const OTPVerification = () => {
       <HeroSection className="py-16 bg-gray-100">
         <div className="max-w-xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
-            OTP <span className="text-brand-orange">Verification</span>
+            OTP <span className="text-brand-orange">VERIFICATION</span>
           </h1>
           <p className="text-lg opacity-90 mb-8 animate-fade-in">
             Enter the 6-digit OTP sent to your email.
@@ -183,7 +189,7 @@ const OTPVerification = () => {
                   className="w-full bg-brand-orange text-white"
                   disabled={isVerifyingOtp}
                 >
-                  {isVerifyingOtp ? "Processing..." : "Submit"}
+                  {isVerifyingOtp ? "PROCESSING..." : "SUBMIT"}
                 </Button>
               </form>
             </CardContent>
