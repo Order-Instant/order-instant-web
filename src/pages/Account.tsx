@@ -11,10 +11,17 @@ import { useNavigate } from 'react-router-dom';
 const SERVER_IP = import.meta.env.VITE_SERVER_IP;
 
 const Account = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem('user_jwt') || sessionStorage.getItem('user_jwt');
+    if (!token) {
+      navigate('/auth');
+    }
+  }, [navigate]);
+  
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState('login');
-
-  const navigate = useNavigate();
 
   // Login form state
   const [loginData, setLoginData] = useState({
@@ -159,13 +166,6 @@ const Account = () => {
       setIsSubmittingSignup(false);
     }
   };
-
-  useEffect(() => {
-    const token = localStorage.getItem('user_jwt') || sessionStorage.getItem('user_jwt');
-    if (!token) {
-      navigate('/auth');
-    }
-  }, [navigate]);
 
   return (
     <>

@@ -9,7 +9,7 @@ import { useToast } from "@/components/ui/use-toast";
 const SERVER_IP = import.meta.env.VITE_SERVER_IP;
 
 type OTPVerificationState = {
-  type: "create-user" | "login" | "password-reset";
+  type: "email-verification" | "forgot-password";
   payload?: Record<string, any>;
 };
 
@@ -68,11 +68,15 @@ const OTPVerification = () => {
 
     try {
       let endpoint = "";
+      let method;
       let bodyData: Record<string, any> = {};
+      let successMessage = "";
+      let redirectPath = "/auth"; // default redirect
 
       switch (type) {
-        case "create-user":
+        case "email-verification":
           endpoint = `${SERVER_IP}/create-user`;
+          method = "POST";
           bodyData = {
             firstName: payload?.firstName,
             lastName: payload?.lastName,
@@ -80,27 +84,28 @@ const OTPVerification = () => {
             password: payload?.password,
             otp: otpCode,
           };
+          successMessage = "Account created successfully! You can now log in.";
+          redirectPath = "/auth"; // login page
           break;
-        case "login":
-          endpoint = `${SERVER_IP}/login`;
+
+        case "forgot-password":
+          endpoint = `${SERVER_IP}/change-password`;
+          method = "PUT";
           bodyData = {
-            ...payload,
+            email: payload?.email,
+            newPassword: payload?.newPassword,
             otp: otpCode,
           };
+          successMessage = "Password reset successfully! Please log in with your new password.";
+          redirectPath = "/auth"; // login page
           break;
-        case "password-reset":
-          endpoint = `${SERVER_IP}/reset-password`;
-          bodyData = {
-            ...payload,
-            otp: otpCode,
-          };
-          break;
+
         default:
           throw new Error("Invalid operation type");
       }
 
       const response = await fetch(endpoint, {
-        method: "POST",
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bodyData),
       });
@@ -110,15 +115,15 @@ const OTPVerification = () => {
       if (response.ok) {
         toast({
           title: "Success",
-          description:
-            type === "create-user"
-              ? "Account created successfully!"
-              : type === "login"
-              ? "Logged in successfully!"
-              : "Password reset successful.",
+          description: successMessage,
         });
+
         setOtp(Array(6).fill(""));
-        navigate("/auth")
+
+        setTimeout(() => {
+          navigate(redirectPath);
+        }, 1500);
+
       } else {
         toast({
           title: "Error",
@@ -129,13 +134,14 @@ const OTPVerification = () => {
     } catch (err) {
       toast({
         title: "Network Error",
-        description: "Could not reach server.",
+        description: "Could not reach the server. Please check your connection and try again.",
         variant: "destructive",
       });
     } finally {
       setIsVerifyingOtp(false);
     }
   };
+
 
   return (
     <>

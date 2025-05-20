@@ -16,6 +16,7 @@ import Shipping from "./pages/Shipping";
 import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import OTP from "./pages/OTPVerification";
+import ForgotPassword from "./pages/ForgotPassword";
 
 // ScrollToTop component moved inside BrowserRouter context
 const ScrollToTop = () => {
@@ -48,6 +49,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/otp-verification" element={<OTP />} />
               <Route path="/account" element={<Account />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/shipping" element={<Shipping />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

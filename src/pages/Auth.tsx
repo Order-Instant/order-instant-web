@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import { Eye, EyeOff, Mail, Lock, User, Check } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const SERVER_IP = import.meta.env.VITE_SERVER_IP;
 
@@ -142,7 +142,7 @@ const Auth = () => {
         // Redirect with type and payload to otp-verification
         navigate('/otp-verification', {
           state: {
-            type: 'create-user',
+            type: 'email-verification',
             payload: {
               email: signupData.email,
               firstName: signupData.firstName,
@@ -185,10 +185,10 @@ const Auth = () => {
       >
         <div className="max-w-xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
-            Your <span className="text-brand-orange">Account</span>
+            Get <span className="text-brand-orange">Started</span>
           </h1>
           <p className="text-lg opacity-90 mb-8 animate-fade-in">
-            Log in to your OrderInstant account or create a new one to effortlessly manage your shipments, track orders in real-time, and enjoy a seamless shipping experience tailored to your needs.
+            Log in to your OrderInstant account or create a new one to effortlessly manage your shipments, track orders in real-time.
           </p>
         </div>
       </HeroSection>
@@ -271,9 +271,9 @@ const Auth = () => {
                           </label>
                         </div>
                         <div className="text-sm">
-                          <a href="#" className="text-brand-orange hover:text-brand-dark-orange">
+                          <Link to={"/forgot-password"} className="text-brand-orange hover:text-brand-dark-orange">
                             Forgot password?
-                          </a>
+                          </Link>
                         </div>
                       </div>
 
