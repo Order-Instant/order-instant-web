@@ -21,8 +21,40 @@ interface UserInfo {
 
 interface Package {
   _id: string;
-  status: string;
+  userId: string;
+  senderFullName: string;
+  senderCompanyName: string;
+  senderStreetAddress: string;
+  senderCity: string;
+  senderPostalCode: string;
+  senderCountry: string;
+  senderPhone: string;
+  senderEmail: string;
+  receiverFullName: string;
+  receiverCompanyName: string;
+  receiverStreetAddress: string;
+  receiverCity: string;
+  receiverPostalCode: string;
+  receiverCountry: string;
+  receiverPhone: string;
+  receiverEmail: string;
+  packageType: string;
+  weight: number;
+  length: number;
+  width: number;
+  height: number;
+  packageDescription: string;
+  paymentMethod: string;
+  estimatedDeliveryTime: string;
+  lastKnownLocation: string;
+  processingDateTime: string;
+  pickedUpDataTime: string;
+  departedDateTime: string;
+  deliveredDateTime: string;
+  cancelledDateTime: string;
   createdAt: string;
+  updatedAt: string;
+  __v: number;
 }
 
 const Account = () => {
@@ -87,7 +119,6 @@ const Account = () => {
         if (res.ok) {
           const data = await res.json();
           setPackages(data || []);
-          console.log(packages);
         }
       } catch (error) {
         toast({
@@ -105,6 +136,77 @@ const Account = () => {
       fetchPackages();
     }
   }, [navigate, toast, activeTab]);
+
+  const getCurrentStatus = (pkg: Package) => {
+    const statusTimestamps = [
+      { status: 'processing', time: pkg.processingDateTime },
+      { status: 'picked-up', time: pkg.pickedUpDataTime },
+      { status: 'departed', time: pkg.departedDateTime },
+      { status: 'delivered', time: pkg.deliveredDateTime },
+      { status: 'cancelled', time: pkg.cancelledDateTime },
+    ].filter(item => item.time); // Filter out empty timestamps
+
+    // Sort by time (newest first)
+    statusTimestamps.sort((a, b) => 
+      new Date(b.time).getTime() - new Date(a.time).getTime()
+    );
+
+    // Return the latest status or 'pending' if no statuses
+    return statusTimestamps[0]?.status || 'pending';
+  };
+
+  const getStatusDetails = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'processing':
+        return {
+          icon: <Clock className="h-4 w-4" />,
+          color: 'text-blue-500',
+          bg: 'bg-blue-50',
+          border: 'border-blue-100',
+          text: 'Processing'
+        };
+      case 'picked-up':
+        return {
+          icon: <Package className="h-4 w-4" />,
+          color: 'text-purple-500',
+          bg: 'bg-purple-50',
+          border: 'border-purple-100',
+          text: 'Picked Up'
+        };
+      case 'departed':
+        return {
+          icon: <Plane className="h-4 w-4" />,
+          color: 'text-yellow-500',
+          bg: 'bg-yellow-50',
+          border: 'border-yellow-100',
+          text: 'Departed'
+        };
+      case 'delivered':
+        return {
+          icon: <CheckCircle className="h-4 w-4" />,
+          color: 'text-green-500',
+          bg: 'bg-green-50',
+          border: 'border-green-100',
+          text: 'Delivered'
+        };
+      case 'cancelled':
+        return {
+          icon: <Ban className="h-4 w-4" />,
+          color: 'text-red-500',
+          bg: 'bg-red-50',
+          border: 'border-red-100',
+          text: 'Cancelled'
+        };
+      default:
+        return {
+          icon: <Clock className="h-4 w-4" />,
+          color: 'text-gray-500',
+          bg: 'bg-gray-50',
+          border: 'border-gray-100',
+          text: 'Unknown'
+        };
+    }
+  };
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -147,51 +249,6 @@ const Account = () => {
         description: "Could not update profile.",
         variant: "destructive",
       });
-    }
-  };
-
-  const getStatusDetails = (status: Package['status']) => {
-    switch (status.toLowerCase()) {
-      case 'pending':
-        return {
-          icon: <Clock className="h-4 w-4" />,
-          color: 'text-red-500',
-          bg: 'bg-red-50',
-          border: 'border-red-100',
-          text: 'Pending'
-        };
-      case 'departed':
-        return {
-          icon: <Plane className="h-4 w-4" />,
-          color: 'text-yellow-500',
-          bg: 'bg-yellow-50',
-          border: 'border-yellow-100',
-          text: 'Departed'
-        };
-      case 'delivered':
-        return {
-          icon: <CheckCircle className="h-4 w-4" />,
-          color: 'text-green-500',
-          bg: 'bg-green-50',
-          border: 'border-green-100',
-          text: 'Delivered'
-        };
-      case 'cancelled':
-        return {
-          icon: <Ban className="h-4 w-4" />,
-          color: 'text-red-500',
-          bg: 'bg-red-50',
-          border: 'border-red-100',
-          text: 'Cancelled'
-        };
-      default:
-        return {
-          icon: <Clock className="h-4 w-4" />,
-          color: 'text-gray-500',
-          bg: 'bg-gray-50',
-          border: 'border-gray-100',
-          text: 'Unknown'
-        };
     }
   };
 
@@ -239,11 +296,14 @@ const Account = () => {
   };
 
   const formatDate = (dateString: string) => {
+    if (!dateString) return 'N/A';
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
     });
   };
 
@@ -253,7 +313,6 @@ const Account = () => {
         <div className="w-full">
           <Card className="p-4 bg-gray-100 text-black">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-              {/* Left: Photo + Name + Email */}
               <div className="flex items-center gap-4">
                 <img
                   src={userInfo?.profilePictureUrl || defaultAvatar}
@@ -316,14 +375,15 @@ const Account = () => {
                   ) : (
                     <div className="space-y-4">
                       {packages.map((pkg) => {
-                        const statusDetails = getStatusDetails(pkg.status);
+                        const currentStatus = getCurrentStatus(pkg);
+                        const statusDetails = getStatusDetails(currentStatus);
                         return (
                           <Card key={pkg._id} className={`p-4 ${statusDetails.border} border-l-4`}>
                             <div className="flex justify-between items-start flex-wrap">
                               <div>
                                 <h3 className="font-medium flex items-center gap-2">
                                   <Package className="h-5 w-5 text-brand-orange" />
-                                  Package ID: {pkg._id}
+                                  PKG ID: {pkg._id}
                                 </h3>
                                 <div className="mt-4 mb-5 flex flex-wrap gap-4 items-center">
                                   <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${statusDetails.bg}`}>
@@ -337,13 +397,18 @@ const Account = () => {
                                   <div className="text-sm text-gray-600">
                                     <span className="font-medium">Created:</span> {formatDate(pkg.createdAt)}
                                   </div>
+                                  {currentStatus === 'delivered' && pkg.deliveredDateTime && (
+                                    <div className="text-sm text-gray-600">
+                                      <span className="font-medium">Delivered:</span> {formatDate(pkg.deliveredDateTime)}
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                               <div className="flex gap-2 flex-wrap">
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  onClick={() => navigate(`/orders/${pkg._id}`)}
+                                  onClick={() => navigate(`/package/${pkg._id}`)}
                                 >
                                   <span className="mr-2">View</span>
                                   <ArrowRight className="h-4 w-4" />
@@ -352,13 +417,13 @@ const Account = () => {
                                 <Button
                                   variant="outline"
                                   size="sm"
-                                  onClick={() => navigate(`/track`)}
+                                  onClick={() => navigate(`/track/${pkg._id}`)}
                                 >
                                   Track
                                   <ScanEyeIcon className="h-4 w-4 mr-2" />
                                 </Button>
 
-                                {pkg.status !== 'delivered' && pkg.status !== 'cancelled' && (
+                                {currentStatus !== 'delivered' && currentStatus !== 'cancelled' && (
                                   <Button
                                     variant="destructive"
                                     size="sm"
