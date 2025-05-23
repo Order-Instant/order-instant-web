@@ -246,7 +246,7 @@ const Shipping = () => {
 
                   <div className="space-y-4">
                     <div>
-                      <label htmlFor="weight" className="block text-sm font-medium text-gray-700 mb-1">Weight (kg)</label>
+                      <label htmlFor="weight" className="block text-sm font-medium text-gray-700 mb-1">Weight (kg) (Optional)</label>
                       <Input
                         id="weight"
                         name="weight"
@@ -260,7 +260,7 @@ const Shipping = () => {
 
                     <div className="grid grid-cols-3 gap-4">
                       <div>
-                        <label htmlFor="length" className="block text-sm font-medium text-gray-700 mb-1">Length (cm)</label>
+                        <label htmlFor="length" className="block text-sm font-medium text-gray-700 mb-1">Length (cm) (Optional)</label>
                         <Input
                           id="length"
                           name="length"
@@ -272,7 +272,7 @@ const Shipping = () => {
                         />
                       </div>
                       <div>
-                        <label htmlFor="width" className="block text-sm font-medium text-gray-700 mb-1">Width (cm)</label>
+                        <label htmlFor="width" className="block text-sm font-medium text-gray-700 mb-1">Width (cm) (Optional)</label>
                         <Input
                           id="width"
                           name="width"
@@ -284,7 +284,7 @@ const Shipping = () => {
                         />
                       </div>
                       <div>
-                        <label htmlFor="height" className="block text-sm font-medium text-gray-700 mb-1">Height (cm)</label>
+                        <label htmlFor="height" className="block text-sm font-medium text-gray-700 mb-1">Height (cm) (Optional)</label>
                         <Input
                           id="height"
                           name="height"
@@ -299,7 +299,7 @@ const Shipping = () => {
                   </div>
 
                   <div className="md:col-span-2">
-                    <label htmlFor="packageDescription" className="block text-sm font-medium text-gray-700 mb-1">Package Description</label>
+                    <label htmlFor="packageDescription" className="block text-sm font-medium text-gray-700 mb-1">Package Description (Optional)</label>
                     <Textarea
                       id="packageDescription"
                       name="packageDescription"
@@ -491,7 +491,7 @@ const Shipping = () => {
 
       toast({
         title: "Order Placed Successfully!",
-        description: `Your shipment has been created. Tracking number: ${result.trackingNumber || 'OI' + Math.floor(Math.random() * 1000000000)}`,
+        description: `Your shipment has been created. Now use can use your package ID to track your shipment`,
         action: (
           <div className="h-8 w-8 bg-green-500 rounded-full flex items-center justify-center">
             <Check className="h-5 w-5 text-white" />
@@ -529,7 +529,7 @@ const Shipping = () => {
       <HeroSection className="py-12 bg-gray-100">
         <div className="max-w-3xl">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 animate-fade-in">
-            Create a <span className="text-brand-orange">Shipment</span>
+            CREATE A <span className="text-brand-orange">SHIPMENT</span>
           </h1>
           <p className="text-lg opacity-90 animate-fade-in">
             Fill out the information below to create a new shipment.
@@ -590,7 +590,6 @@ const Shipping = () => {
                 disabled={currentStep === 1}
               >
                 Previous
-
               </Button>
 
               {currentStep === totalSteps ? (
