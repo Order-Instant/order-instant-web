@@ -95,7 +95,7 @@ const ForgotPassword = () => {
 
     return (
         <>
-            <HeroSection className="py-16 bg-gray-100">
+            <HeroSection className="relative min-h-[8vh] py-16 bg-gray-100">
                 <div className="max-w-xl mx-auto text-center">
                     <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
                         FORGOT <span className="text-brand-orange">PASSWORD</span>

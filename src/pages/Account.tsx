@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import { Check, DownloadCloud, KeyRound, LogOut, Mail, Trash2, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import defaultAvatar from "../assets/images/dafault-avatar.png"
 
 const SERVER_IP = import.meta.env.VITE_SERVER_IP;
 
@@ -124,7 +125,7 @@ const Account = () => {
               {/* Left: Photo + Name + Email */}
               <div className="flex items-center gap-4">
                 <img
-                  src={userInfo?.profilePictureUrl || "https://cdn.prod.website-files.com/5e51c674258ffe10d286d30a/5e535c632b568a7abf1af4de_peep-92.png"}
+                  src={userInfo?.profilePictureUrl || defaultAvatar}
                   alt="User Profile"
                   className="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover border border-gray-300"
                 />

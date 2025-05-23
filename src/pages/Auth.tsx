@@ -181,14 +181,14 @@ const Auth = () => {
     <>
       {/* Hero Section */}
       <HeroSection 
-        className="py-16 bg-gray-100"
+        className="relative min-h-[8vh] py-16 bg-gray-100"
       >
         <div className="max-w-xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
             GET <span className="text-brand-orange">STARTED</span>
           </h1>
           <p className="text-lg opacity-90 mb-8 animate-fade-in">
-            Log in to your OrderInstant account or create a new one to effortlessly manage your shipments, track orders in real-time.
+            Log in to your OrderInstant account or create a new one.
           </p>
         </div>
       </HeroSection>

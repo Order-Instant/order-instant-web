@@ -170,7 +170,7 @@ const OTPVerification = () => {
 
   return (
     <>
-      <HeroSection className="py-16 bg-gray-100">
+      <HeroSection className="relative min-h-[8vh] py-16 bg-gray-100">
         <div className="max-w-xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
             OTP <span className="text-brand-orange">VERIFICATION</span>
@@ -193,7 +193,7 @@ const OTPVerification = () => {
                       type="text"
                       inputMode="numeric"
                       maxLength={1}
-                      className="w-12 h-12 text-center text-xl font-mono"
+                      className="w-12 [@media(max-width:445px)]:w-8 h-12 [@media(max-width:445px)]:h-8 text-center text-xl font-mono"
                       value={digit}
                       onChange={(e) => handleOtpChange(idx, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(e, idx)}
