@@ -196,6 +196,10 @@ const Account = () => {
   };
 
   const handleDeletePackage = async (packageId: string) => {
+    let ret = window.confirm("Do you really want to delete your package. This action can't be undone.");
+    if(!ret){
+      return;
+    }
     const token = localStorage.getItem('user_jwt') || sessionStorage.getItem('user_jwt');
     if (!token) return;
 
