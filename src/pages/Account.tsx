@@ -27,7 +27,7 @@ const Account = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [activeTab, setActiveTab] = useState('setting');
+  const [activeTab, setActiveTab] = useState('order');
 
   useEffect(() => {
     const token = localStorage.getItem('user_jwt') || sessionStorage.getItem('user_jwt');
@@ -166,16 +166,19 @@ const Account = () => {
         </div>
       </Section>
 
-
       <Section className="bg-white pb-20 pt-0">
         <div className="w-full">
           <Card>
             <CardContent className="p-6">
               <Tabs value={activeTab} onValueChange={setActiveTab}>
                 <TabsList className="grid w-full grid-cols-2 mb-6">
-                  <TabsTrigger value="setting">SETTING</TabsTrigger>
                   <TabsTrigger value="order">ORDER</TabsTrigger>
+                  <TabsTrigger value="setting">SETTING</TabsTrigger>
                 </TabsList>
+
+                <TabsContent value="order" className="mt-0">
+                  <p className="text-sm text-gray-500">Order history will appear here.</p>
+                </TabsContent>
 
                 <TabsContent value="setting" className="mt-0">
                   <form onSubmit={handleUpdate}>
@@ -298,16 +301,9 @@ const Account = () => {
                           <Trash2 className="mr-2 h-4 w-4" />
                           DELETE ACCOUNT
                         </Button>
-
                       </div>
-
-
                     </div>
                   </form>
-                </TabsContent>
-
-                <TabsContent value="order" className="mt-0">
-                  <p className="text-sm text-gray-500">Order history will appear here.</p>
                 </TabsContent>
               </Tabs>
             </CardContent>
