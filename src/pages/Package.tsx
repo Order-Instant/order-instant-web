@@ -21,7 +21,8 @@ import {
     CreditCard,
     ArrowLeft,
     Truck,
-    ScanEyeIcon
+    ScanEyeIcon,
+    Info
 } from 'lucide-react';
 import { Section } from "@/components/ui/containers";
 import { Badge } from "@/components/ui/badge";
