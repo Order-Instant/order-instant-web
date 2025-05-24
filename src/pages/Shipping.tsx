@@ -705,9 +705,10 @@ const Shipping = () => {
       setPaymentMethod('cash-on-delivery');
 
     } catch (error) {
+      // This part is harcoded to send this error message, It always shows same error message even if it is internal server error and not the client
       toast({
-        title: "Error",
-        description: "There was an error submitting your package. Please try again.",
+        title: "Error submitting your package",
+        description: "Please provide all input field unless it is optional",
         variant: "destructive",
       });
     } finally {

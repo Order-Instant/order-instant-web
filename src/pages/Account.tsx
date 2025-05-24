@@ -381,7 +381,7 @@ const Account = () => {
                           <Card key={pkg._id} className={`p-4 ${statusDetails.border} border-l-4`}>
                             <div className="flex justify-between items-start flex-wrap">
                               <div>
-                                <h3 className="font-medium flex items-center gap-2">
+                                <h3 className="font-medium flex items-center gap-2 text-sm sm:text-base">
                                   <Package className="h-5 w-5 text-brand-orange" />
                                   PKG ID: {pkg._id}
                                 </h3>

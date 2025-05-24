@@ -87,6 +87,59 @@ const Track = () => {
     });
   };
 
+  const getStatusDetails = (status: string) => {
+    switch (status.toLowerCase()) {
+      case 'processing':
+        return {
+          icon: <Clock className="h-4 w-4" />,
+          color: 'text-blue-500',
+          bg: 'bg-blue-50',
+          border: 'border-blue-100',
+          text: 'Processing'
+        };
+      case 'picked-up':
+        return {
+          icon: <Package className="h-4 w-4" />,
+          color: 'text-purple-500',
+          bg: 'bg-purple-50',
+          border: 'border-purple-100',
+          text: 'Picked Up'
+        };
+      case 'departed':
+        return {
+          icon: <Plane className="h-4 w-4" />,
+          color: 'text-yellow-500',
+          bg: 'bg-yellow-50',
+          border: 'border-yellow-100',
+          text: 'Departed'
+        };
+      case 'delivered':
+        return {
+          icon: <CheckCircle className="h-4 w-4" />,
+          color: 'text-green-500',
+          bg: 'bg-green-50',
+          border: 'border-green-100',
+          text: 'Delivered'
+        };
+      case 'cancelled':
+        return {
+          icon: <Ban className="h-4 w-4" />,
+          color: 'text-red-500',
+          bg: 'bg-red-50',
+          border: 'border-red-100',
+          text: 'Cancelled'
+        };
+      default:
+        return {
+          icon: <Clock className="h-4 w-4" />,
+          color: 'text-gray-500',
+          bg: 'bg-gray-50',
+          border: 'border-gray-100',
+          text: 'Unknown'
+        };
+    }
+  };
+
   const getStatusEvents = (pkg: Package): StatusEvent[] => {
     const events: StatusEvent[] = [];
 
@@ -95,7 +148,7 @@ const Track = () => {
         status: 'Processing',
         datetime: pkg.processingDateTime,
         description: 'Package received and being processed',
-        icon: <Package className="h-5 w-5" />,
+        icon: <Package className="h-5 w-5 text-blue-500" />,
         color: 'text-blue-500'
       });
     }
@@ -105,7 +158,7 @@ const Track = () => {
         status: 'Picked Up',
         datetime: pkg.pickedUpDataTime,
         description: 'Package picked up by courier',
-        icon: <Truck className="h-5 w-5" />,
+        icon: <Truck className="h-5 w-5 text-purple-500" />,
         color: 'text-purple-500'
       });
     }
@@ -115,7 +168,7 @@ const Track = () => {
         status: 'Departed',
         datetime: pkg.departedDateTime,
         description: 'Package departed from facility',
-        icon: <Plane className="h-5 w-5" />,
+        icon: <Plane className="h-5 w-5 text-yellow-500" />,
         color: 'text-yellow-500'
       });
     }
@@ -125,7 +178,7 @@ const Track = () => {
         status: 'Delivered',
         datetime: pkg.deliveredDateTime,
         description: 'Package delivered to recipient',
-        icon: <CheckCircle className="h-5 w-5" />,
+        icon: <CheckCircle className="h-5 w-5 text-green-500" />,
         color: 'text-green-500'
       });
     }
@@ -135,15 +188,24 @@ const Track = () => {
         status: 'Cancelled',
         datetime: pkg.cancelledDateTime,
         description: 'Shipment was cancelled',
-        icon: <Ban className="h-5 w-5" />,
+        icon: <Ban className="h-5 w-5 text-red-500" />,
         color: 'text-red-500'
       });
     }
 
     // Sort events by datetime
-    return events.sort((a, b) => 
+    return events.sort((a, b) =>
       new Date(a.datetime).getTime() - new Date(b.datetime).getTime()
     );
+  };
+
+  const getLatestStatus = (pkg: Package): string => {
+    if (pkg.cancelledDateTime) return 'Cancelled';
+    if (pkg.deliveredDateTime) return 'Delivered';
+    if (pkg.departedDateTime) return 'Departed';
+    if (pkg.pickedUpDataTime) return 'Picked Up';
+    if (pkg.processingDateTime) return 'Processing';
+    return 'Not Processed';
   };
 
   const getProgressValue = (pkg: Package): number => {
@@ -173,20 +235,31 @@ const Track = () => {
 
   const statusEvents = getStatusEvents(packageData);
   const progressValue = getProgressValue(packageData);
+  const latestStatus = getLatestStatus(packageData);
+  const statusDetails = getStatusDetails(latestStatus.toLowerCase());
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main tracking card */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Main tracking information */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Package className="h-6 w-6 text-brand-orange" />
-                Tracking Package #{packageData._id}
+              <CardTitle className="flex items-center gap-2 text-base sm:text-lg md:text-xl">
+                <Package className="hidden sm:inline h-6 w-6 text-brand-orange" />
+                Tracking Package: {packageData._id}
               </CardTitle>
-              <CardDescription>
-                {packageData.packageDescription}
+              <CardDescription className="flex items-center gap-2">
+                <span className="font-medium">Current Status:</span>
+                <div className={`flex items-center gap-1 px-2 py-1 rounded-full ${statusDetails.bg} ${statusDetails.border} border`}>
+                  <span className={statusDetails.color}>
+                    {statusDetails.icon}
+                  </span>
+                  <span className={`text-xs font-medium ${statusDetails.color}`}>
+                    {statusDetails.text}
+                  </span>
+                </div>
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -213,8 +286,8 @@ const Track = () => {
                             <div className="w-0.5 h-full bg-gray-200"></div>
                           )}
                         </div>
-                        <div className="flex-1">
-                          <div className="flex justify-between">
+                        <div className="flex-1 gap-2 flex-wrap">
+                          <div className="flex justify-between gap-2 flex-wrap items-center">
                             <h3 className="font-medium">{event.status}</h3>
                             <span className="text-sm text-gray-500">
                               {formatDate(event.datetime)}
@@ -223,7 +296,7 @@ const Track = () => {
                           <p className="text-sm text-gray-500">{event.description}</p>
                           {event.status === 'Departed' && packageData.lastKnownLocation && (
                             <p className="text-sm mt-1">
-                              <span className="font-medium">Last Location:</span> {packageData.lastKnownLocation}
+                              <span className="font-medium">Last Known Location:</span> {packageData.lastKnownLocation}
                             </p>
                           )}
                         </div>
@@ -237,52 +310,10 @@ const Track = () => {
             </CardContent>
           </Card>
 
-          {/* Tracking FAQs */}
+          {/* Shipment Details at bottom of tracking card */}
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <HelpCircle className="h-6 w-6 text-brand-orange" />
-                Tracking FAQs
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>How long does it take to update tracking?</AccordionTrigger>
-                  <AccordionContent>
-                    Tracking updates typically appear in our system within 1-2 hours of a scanning event. 
-                    During periods of high volume, updates may take slightly longer to appear.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>What if my tracking isn't showing any information?</AccordionTrigger>
-                  <AccordionContent>
-                    If you've just created your shipment, please allow 2-4 hours for the tracking information to appear in our system. 
-                    If it's been longer than that, please contact our customer support team for assistance.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-3">
-                  <AccordionTrigger>What do the different tracking statuses mean?</AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-2">
-                      <p><strong>Processing:</strong> Your shipment has been entered into our system but hasn't been picked up yet.</p>
-                      <p><strong>Picked Up:</strong> Your package has been collected from the origin location.</p>
-                      <p><strong>Departed:</strong> Your shipment has left the processing facility.</p>
-                      <p><strong>Delivered:</strong> Your package has been delivered to the recipient.</p>
-                      <p><strong>Cancelled:</strong> The shipment was cancelled and will not be delivered.</p>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Package details sidebar */}
-        <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Shipment Details</CardTitle>
+              <CardTitle>SHIPMENT DETAILS</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <div>
@@ -300,16 +331,14 @@ const Track = () => {
                   {packageData.receiverStreetAddress}, {packageData.receiverCity}, {packageData.receiverCountry}
                 </p>
               </div>
-
-              {packageData.estimatedDeliveryTime && (
-                <div>
-                  <h3 className="text-sm font-medium text-gray-500">Estimated Delivery</h3>
-                  <p>{formatDate(packageData.estimatedDeliveryTime)}</p>
-                </div>
-              )}
-
-              <Button 
-                variant="outline" 
+              <div>
+                <h3 className="text-sm font-medium text-gray-500">Package Description</h3>
+                <p className="text-sm text-gray-600">
+                  {packageData.packageDescription}
+                </p>
+              </div>
+              <Button
+                variant="outline"
                 className="w-full"
                 onClick={() => navigate(`/package/${packageData._id}`)}
               >
@@ -317,18 +346,80 @@ const Track = () => {
               </Button>
             </CardContent>
           </Card>
-
-          {packageData.lastKnownLocation && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Last Known Location</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p>{packageData.lastKnownLocation}</p>
-              </CardContent>
-            </Card>
-          )}
         </div>
+
+        {/* Package details sidebar */}
+        <div className="space-y-6">
+          {/* Estimated Delivery Time */}
+          <Card>
+            <CardHeader>
+              <CardTitle>ESTIMATED DELIVERY TIME</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {packageData.estimatedDeliveryTime ? (
+                <p>{formatDate(packageData.estimatedDeliveryTime)}</p>
+              ) : (
+                <p className="text-gray-500">Not available</p>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Last Known Location */}
+          <Card>
+            <CardHeader>
+              <CardTitle>LAST KNOWN LOCATION</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {packageData.lastKnownLocation ? (
+                <p>{packageData.lastKnownLocation}</p>
+              ) : (
+                <p className="text-gray-500">Not available</p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* FAQs at bottom of page */}
+      <div className="mt-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HelpCircle className="h-6 w-6 text-brand-orange" />
+              TRACKING FAQs
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger>How long does it take to update tracking?</AccordionTrigger>
+                <AccordionContent>
+                  Tracking updates typically appear in our system within 1-2 hours of a scanning event.
+                  During periods of high volume, updates may take slightly longer to appear.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-2">
+                <AccordionTrigger>What if my tracking isn't showing any information?</AccordionTrigger>
+                <AccordionContent>
+                  If you've just created your shipment, please allow 2-4 hours for the tracking information to appear in our system.
+                  If it's been longer than that, please contact our customer support team for assistance.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="item-3">
+                <AccordionTrigger>What do the different tracking statuses mean?</AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-2">
+                    <p><strong>Processing:</strong> Your shipment has been entered into our system but hasn't been picked up yet.</p>
+                    <p><strong>Picked Up:</strong> Your package has been collected from the origin location.</p>
+                    <p><strong>Departed:</strong> Your shipment has left the processing facility.</p>
+                    <p><strong>Delivered:</strong> Your package has been delivered to the recipient.</p>
+                    <p><strong>Cancelled:</strong> The shipment was cancelled and will not be delivered.</p>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );

@@ -342,7 +342,7 @@ const Package = () => {
 
     return (
         <Section className="space-y-6">
-            <div className="flex justify-between items-center mb-5">
+            <div className="flex justify-between items-center mb-5 gap-3 flex-wrap">
                 <Button onClick={() => navigate(-1)} variant="outline">
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Go Back
@@ -364,7 +364,7 @@ const Package = () => {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-6">
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* Sender Information */}
                         <Card>
                             <CardHeader>
@@ -402,7 +402,7 @@ const Package = () => {
 
                                 <div className="flex items-center gap-3">
                                     <Mail className="h-5 w-5 text-gray-500" />
-                                    <p>{packageData.senderEmail}</p>
+                                    <p style={{wordBreak: "break-all"}}>{packageData.senderEmail}</p>
                                 </div>
                             </CardContent>
                         </Card>
@@ -444,7 +444,7 @@ const Package = () => {
 
                                 <div className="flex items-center gap-3">
                                     <Mail className="h-5 w-5 text-gray-500" />
-                                    <p>{packageData.receiverEmail}</p>
+                                    <p style={{wordBreak: "break-all"}}>{packageData.receiverEmail}</p>
                                 </div>
                             </CardContent>
                         </Card>
