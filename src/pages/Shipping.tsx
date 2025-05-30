@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/components/ui/use-toast";
 import { Package, User, MapPin, Truck, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import QR from '../assets/images/order-instant-qr-code.jpg'
 
 interface AddressFormProps {
   title: string;
@@ -20,14 +21,29 @@ interface AddressFormProps {
     city: string;
     postalCode: string;
     country: string;
+    district: string;
     phone: string;
     email: string;
   };
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
 }
 
+const nepaliDistricts = [
+  "Achham", "Arghakhanchi", "Baglung", "Baitadi", "Bajhang", "Bajura", "Banke", "Bara", "Bardiya", 
+  "Bhaktapur", "Bhojpur", "Chitwan", "Dadeldhura", "Dailekh", "Dang", "Darchula", "Dhading", 
+  "Dhankuta", "Dhanusa", "Dholkha", "Dolpa", "Doti", "Gorkha", "Gulmi", "Humla", "Ilam", 
+  "Jajarkot", "Jhapa", "Jumla", "Kailali", "Kalikot", "Kanchanpur", "Kapilvastu", "Kaski", 
+  "Kathmandu", "Kavrepalanchok", "Khotang", "Lalitpur", "Lamjung", "Mahottari", "Makwanpur", 
+  "Manang", "Morang", "Mugu", "Mustang", "Myagdi", "Nawalparasi", "Nuwakot", "Okhaldhunga", 
+  "Palpa", "Panchthar", "Parbat", "Parsa", "Pyuthan", "Ramechhap", "Rasuwa", "Rautahat", 
+  "Rolpa", "Rukum", "Rupandehi", "Salyan", "Sankhuwasabha", "Saptari", "Sarlahi", "Sindhuli", 
+  "Sindhupalchok", "Siraha", "Solukhumbu", "Sunsari", "Surkhet", "Syangja", "Tanahu", "Taplejung", 
+  "Terhathum", "Udayapur"
+];
+
 const AddressForm = ({ title, formData, onChange }: AddressFormProps) => {
   const prefix = title.toLowerCase();
+  const isNepal = formData.country === 'NP';
 
   return (
     <div>
@@ -296,6 +312,24 @@ const AddressForm = ({ title, formData, onChange }: AddressFormProps) => {
             </SelectContent>
           </Select>
         </div>
+        {isNepal && (
+          <div>
+            <label htmlFor={`${prefix}District`} className="block text-sm font-medium text-gray-700 mb-1">District</label>
+            <Select
+              value={formData.district}
+              onValueChange={(value) => onChange({ target: { name: 'district', value } } as any)}
+            >
+              <SelectTrigger id={`${prefix}District`}>
+                <SelectValue placeholder="Select District" />
+              </SelectTrigger>
+              <SelectContent>
+                {nepaliDistricts.map(district => (
+                  <SelectItem key={district} value={district}>{district}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
         <div>
           <label htmlFor={`${prefix}Phone`} className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
           <Input
@@ -331,7 +365,6 @@ const Shipping = () => {
   const totalSteps = 3;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Address forms state
   const emptyAddress = {
     fullName: '',
     companyName: '',
@@ -339,6 +372,7 @@ const Shipping = () => {
     city: '',
     postalCode: '',
     country: 'NP',
+    district: '',
     phone: '',
     email: ''
   };
@@ -346,7 +380,6 @@ const Shipping = () => {
   const [senderInfo, setSenderInfo] = useState({ ...emptyAddress });
   const [receiverInfo, setReceiverInfo] = useState({ ...emptyAddress });
 
-  // Package details state
   const [packageDetails, setPackageDetails] = useState({
     packageType: 'box',
     weight: '',
@@ -356,7 +389,6 @@ const Shipping = () => {
     packageDescription: '',
   });
 
-  // Payment state
   const [paymentMethod, setPaymentMethod] = useState('cash-on-delivery');
 
   const handleSenderChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -551,7 +583,9 @@ const Shipping = () => {
                         <p className="text-gray-600">
                           {senderInfo.fullName}<br />
                           {senderInfo.streetAddress}<br />
-                          {senderInfo.city}, {senderInfo.postalCode}, {senderInfo.country}
+                          {senderInfo.city}, {senderInfo.postalCode}
+                          {senderInfo.country === 'NP' && senderInfo.district && `, ${senderInfo.district}`}<br />
+                          {senderInfo.country}
                         </p>
                       </div>
                     </div>
@@ -565,7 +599,9 @@ const Shipping = () => {
                         <p className="text-gray-600">
                           {receiverInfo.fullName}<br />
                           {receiverInfo.streetAddress}<br />
-                          {receiverInfo.city}, {receiverInfo.postalCode}, {receiverInfo.country}
+                          {receiverInfo.city}, {receiverInfo.postalCode}
+                          {receiverInfo.country === 'NP' && receiverInfo.district && `, ${receiverInfo.district}`}<br />
+                          {receiverInfo.country}
                         </p>
                       </div>
                     </div>
@@ -589,6 +625,19 @@ const Shipping = () => {
                         Cash on Delivery
                       </Label>
                     </div>
+                    <div className="flex items-center space-x-3 border p-4 rounded-md">
+                      <RadioGroupItem value="pay-online" id="pay-online" />
+                      <Label htmlFor="pay-online" className="flex items-center gap-2">
+                        <i className="fa-solid fa-qrcode"></i>
+                        Pay Online
+                      </Label>
+                    </div>
+                    {
+                      paymentMethod == "pay-online"?
+                      <img src={QR} alt="" style={{height: "100%", width: "100%", objectFit: "cover"}} />
+                      :
+                      null
+                    }
                   </RadioGroup>
                 </CardContent>
               </Card>
@@ -624,12 +673,11 @@ const Shipping = () => {
       toast({
         title: "Create an Account or Log In",
         description: "You need to log in or sign up to start shipping and track your packages.",
-        variant: "destructive", // Optional: use a red-style toast if you want to highlight it's an important action
+        variant: "destructive",
       });
       navigate("/auth");
       return;
     }
-
 
     try {
       const packageData = {
@@ -641,6 +689,7 @@ const Shipping = () => {
         senderCity: senderInfo.city,
         senderPostalCode: senderInfo.postalCode,
         senderCountry: senderInfo.country,
+        senderDistrict: senderInfo.district,
         senderPhone: senderInfo.phone,
         senderEmail: senderInfo.email,
 
@@ -651,6 +700,7 @@ const Shipping = () => {
         receiverCity: receiverInfo.city,
         receiverPostalCode: receiverInfo.postalCode,
         receiverCountry: receiverInfo.country,
+        receiverDistrict: receiverInfo.district,
         receiverPhone: receiverInfo.phone,
         receiverEmail: receiverInfo.email,
 
@@ -705,7 +755,6 @@ const Shipping = () => {
       setPaymentMethod('cash-on-delivery');
 
     } catch (error) {
-      // This part is harcoded to send this error message, It always shows same error message even if it is internal server error and not the client
       toast({
         title: "Error submitting your package",
         description: "Please provide all input field unless it is optional",

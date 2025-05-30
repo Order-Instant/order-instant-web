@@ -38,6 +38,7 @@ interface PackageDetails {
     senderCity: string;
     senderPostalCode: string;
     senderCountry: string;
+    senderDistrict: string;
     senderPhone: string;
     senderEmail: string;
     receiverFullName: string;
@@ -46,6 +47,7 @@ interface PackageDetails {
     receiverCity: string;
     receiverPostalCode: string;
     receiverCountry: string;
+    receiverDistrict: string;
     receiverPhone: string;
     receiverEmail: string;
     packageType: string;
@@ -390,6 +392,7 @@ const Package = () => {
                                         <p className="font-medium">{packageData.senderStreetAddress}</p>
                                         <p className="text-sm text-gray-600">
                                             {packageData.senderCity}, {packageData.senderPostalCode}
+                                            {packageData.senderCountry === 'NP' && packageData.senderDistrict && `, ${packageData.senderDistrict}`}
                                         </p>
                                         <p className="text-sm text-gray-600">{formatCountry(packageData.senderCountry)}</p>
                                     </div>
@@ -432,6 +435,7 @@ const Package = () => {
                                         <p className="font-medium">{packageData.receiverStreetAddress}</p>
                                         <p className="text-sm text-gray-600">
                                             {packageData.receiverCity}, {packageData.receiverPostalCode}
+                                            {packageData.receiverCountry === 'NP' && packageData.receiverDistrict && `, ${packageData.receiverDistrict}`}
                                         </p>
                                         <p className="text-sm text-gray-600">{formatCountry(packageData.receiverCountry)}</p>
                                     </div>
