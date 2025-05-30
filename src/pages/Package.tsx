@@ -393,10 +393,7 @@ const Package = () => {
                                         <p className="text-sm text-gray-600">
                                             {packageData.senderCity}, {packageData.senderPostalCode}
                                         </p>
-                                        {packageData.senderCountry === 'NP' && packageData.senderDistrict && (
-                                            <p className="text-sm text-gray-600">{packageData.senderDistrict}</p>
-                                        )}
-                                        <p className="text-sm text-gray-600">{formatCountry(packageData.senderCountry)}</p>
+                                        <p className="text-sm text-gray-600">{packageData.senderCountry === 'NP'?`${packageData.senderDistrict}, `: null}{formatCountry(packageData.senderCountry)}</p>
                                     </div>
                                 </div>
 
@@ -438,10 +435,7 @@ const Package = () => {
                                         <p className="text-sm text-gray-600">
                                             {packageData.receiverCity}, {packageData.receiverPostalCode}
                                         </p>
-                                        {packageData.receiverCountry === 'NP' && packageData.receiverDistrict && (
-                                            <p className="text-sm text-gray-600">{packageData.receiverDistrict}</p>
-                                        )}
-                                        <p className="text-sm text-gray-600">{formatCountry(packageData.receiverCountry)}</p>
+                                        <p className="text-sm text-gray-600">{packageData.receiverCountry === 'NP'?`${packageData.receiverDistrict}, `: null}{formatCountry(packageData.receiverCountry)}</p>
                                     </div>
                                 </div>
 
