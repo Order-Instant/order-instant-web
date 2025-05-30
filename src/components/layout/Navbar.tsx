@@ -43,9 +43,6 @@ const Navbar = () => {
             <Link to="/contact" className={`font-medium hover:text-brand-orange transition-colors duration-200 ${isActive('/contact') ? 'text-brand-orange' : 'text-gray-700'}`}>
               CONTACT
             </Link>
-            <Link to="/track" className={`font-medium hover:text-brand-orange transition-colors duration-200 ${isActive('/track') ? 'text-brand-orange' : 'text-gray-700'}`}>
-              TRACK
-            </Link>
             <Link to="/account" className="ml-3">
               <Button variant="outline" className="border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white">
                 ACCOUNT
@@ -84,9 +81,6 @@ const Navbar = () => {
               </Link>
               <Link to="/contact" className={`py-2 px-4 rounded-md ${isActive('/contact') ? 'bg-brand-orange text-white' : 'text-gray-700 hover:bg-gray-100'}`} onClick={closeMenu}>
                 Contact
-              </Link>
-              <Link to="/track" className={`py-2 px-4 rounded-md ${isActive('/track') ? 'bg-brand-orange text-white' : 'text-gray-700 hover:bg-gray-100'}`} onClick={closeMenu}>
-                Track
               </Link>
               <Link to="/account" className="py-2 px-4 bg-gray-100 rounded-md text-gray-700 hover:bg-gray-200" onClick={closeMenu}>
                 Account
