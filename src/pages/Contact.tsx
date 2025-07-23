@@ -216,14 +216,7 @@ const Contact = () => {
       <Section className="bg-gray-50 pb-0">
         <h2 className="text-2xl font-bold mb-6 text-center">OUR LOCATION</h2>
         <div className="w-full h-96 bg-gray-300 rounded-t-lg overflow-hidden">
-          {/* Placeholder for map - in a real app, you would integrate Google Maps or another mapping service here */}
-          <div className="w-full h-full flex items-center justify-center bg-gray-200">
-            <div className="text-center">
-              <MapPin className="h-12 w-12 text-brand-orange mx-auto mb-2" />
-              <p className="text-gray-600">Map integration would go here in a real application</p>
-              <p className="text-gray-600">123 Delivery Street, Shipping City, SC 12345</p>
-            </div>
-          </div>
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7063.192690686976!2d85.31012089318007!3d27.729746754678693!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb19006c7fc47f%3A0x761e27b66a9d46f6!2sOrder%20instant%20courier%20and%20cargo!5e0!3m2!1sne!2snp!4v1753273209269!5m2!1sne!2snp" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </Section>
     </>
